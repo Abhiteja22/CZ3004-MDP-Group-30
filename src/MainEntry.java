@@ -9,6 +9,11 @@ public class MainEntry {
 	public static void main(String[] args) {
 		MainView mainView = new MainView();
 		
+		
+		///////////////////////////////////////////
+		// Debugging Zone
+		//////////////////////////////////////////////
+		
 		JFrame frame = new JFrame();
 		int frameWidth = MainView.PANEL_WIDTH + 25;
 		int frameHeight = MainView.PANEL_HEIGHT + 40;
