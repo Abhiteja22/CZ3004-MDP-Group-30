@@ -1,4 +1,4 @@
-package mdp_test_own;
+//package mdp_test_own;
 
 /*
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor*/
 public class Robot {
-	enum Orientation {
+	public enum Orientation {
 		  NORTH,
 		  EAST,
 		  SOUTH,
@@ -18,7 +18,7 @@ public class Robot {
 	
 	private GridCell currentGridCell = new GridCell(new Location(0,17),false);
 	private Location exactLocation;
-	private Orientation orientation = Orientation.NORTH;
+	Orientation orientation = Orientation.NORTH;
 	
 	public GridCell getCurrentGridCell() {
 		return this.currentGridCell;
@@ -48,7 +48,7 @@ public class Robot {
 		}
 	}
 	
-	private void setOrientation(Orientation a) {
+	void setOrientation(Orientation a) {
 		this.orientation = a;
 	}
 	

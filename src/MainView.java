@@ -1,4 +1,4 @@
-package mdp_test_own;
+//package mdp_test_own;
 
 import java.util.ArrayList;
 
@@ -41,10 +41,10 @@ public class MainView extends JPanel {
 		calculateDimensions();
 		//generateRandomObstacels(5);
 		setObstacles();
-		robot.moveForward();
-		robot.moveForward();
-		robot.moveForward();
-		robot.turnRight();
+//		robot.moveForward();
+//		robot.moveForward();
+//		robot.moveForward();
+//		robot.turnRight();
 		populateGridCells();
 		System.out.println("Finished Populating Grid Cells.");
 		Explore explore = new Explore(obstacleLocations);
@@ -67,11 +67,11 @@ public class MainView extends JPanel {
 	private void setObstacles() {
 //		Location obstacleLocation = new Location(x,y);
 //		obstacleLocations.add(obstacleLocation);
-		obstacleLocations.add(new Location(1,1,2));
-		obstacleLocations.add(new Location(10,10,3));
-		obstacleLocations.add(new Location(7,1,1));
-		obstacleLocations.add(new Location(15,15,0));
-		obstacleLocations.add(new Location(1,8,1));
+		obstacleLocations.add(new Location(4,10,'S'));
+//		obstacleLocations.add(new Location(10,10,3));
+//		obstacleLocations.add(new Location(7,1,1));
+//		obstacleLocations.add(new Location(15,15,0));
+//		obstacleLocations.add(new Location(1,8,1));
 	}
 	
 	private void calculateDimensions() {
