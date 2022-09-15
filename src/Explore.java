@@ -3,31 +3,32 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class Explore {
 	private List<Location> robotGoalLocations = new ArrayList<Location>();
 	private ArrayList<Location> Visited = new ArrayList<Location>(5);
 	private Location startingLocation;	
 	private Robot r = new Robot();
+	private PriorityQueue<Location> openList;
 	
 	public Location aStar(Location start, Location target){
 	    ArrayList<Location> closedList = new ArrayList<>();
-	    ArrayList<Location> openList = new ArrayList<>();
-
+	    //ArrayList<Location> openList = new ArrayList<>();
+	    
 	    start.f = start.g + start.calculateHeuristic(start, target);
-	    openList.add(start);
-	    System.out.println(target.getX());
-	    System.out.println(target.getY());
+	    this.openList.add(start);
 	    while(!openList.isEmpty()){
-	    	System.out.println(openList);
-	        Location n = openList.remove(0);
-	        if(n.isSameLocation(target)){
+	    	
+	        Location n = openList.remove();
+	        //System.out.println(n.getX());
+	        if(n.isSameGoalLocation(target)){
 	            return n;
 	        }
 
 	        for(Location  edge : n.getNeighbors(n)){
 	            Location m = edge;
-	            double totalWeight = n.g + 1;
+	            double totalWeight = n.g + m.g;
 
 	            if(!openList.contains(m) && !closedList.contains(m)){
 	                m.parent = n;
@@ -70,143 +71,106 @@ public class Explore {
 	    Collections.reverse(ids);
 
 	    for(Location id : ids){
-	        System.out.print(id.getX() + " " + id.getY() + " ");
-	    }
-	    Robot r = new Robot();
-	    // Convert location to direction
-	    for (int i=0; i<ids.size()-1; i++) {
-	    	int x1 = ids.get(i).getX();
-	    	int y1 = ids.get(i).getY();
-	    	int x2 = ids.get(i+1).getX();
-	    	int y2 = ids.get(i+1).getY();
-	    	if (r.getOrientation() == 0) {
-	    		if (x1 == x2 && y1-1 == y2) {
-		    		System.out.print("Forward");
-		    	}
-		    	else if (x1+1 == x2 && y1 == y2) {
-		    		System.out.print("Turn right");
-//		    		r.setOrientation();
-		    	}
-		    	else if (x1-1 == x2 && y1 == y2) {
-		    		System.out.print("Turn left");
-//		    		r.setOrientation(r.orientation);
-		    	}
-	    	}
-	    	else if (r.getOrientation() == 1){ // if robot is facing right
-	    		if (x1 == x2 && y1-1 == y2) {
-		    		System.out.print("Turn left");
-		    		r.setOrientation(r.orientation);
-		    	}
-		    	else if (x1+1 == x2 && y1 == y2) {
-		    		System.out.print("Forward");
-		    		
-		    	}
-		    	else if (x1 == x2 && y1+1 == y2) {
-		    		System.out.print("Turn right");
-		    	}
-	    	}
-	    	else if (r.getOrientation() == 1){ // if robot is facing right
-	    		if (x1 == x2 && y1-1 == y2) {
-		    		System.out.print("Turn left");
-		    		r.setOrientation(r.orientation);
-		    	}
-		    	else if (x1+1 == x2 && y1 == y2) {
-		    		System.out.print("Forward");
-		    		
-		    	}
-		    	else if (x1 == x2 && y1+1 == y2) {
-		    		System.out.print("Turn right");
-		    	}
-	    	}
-	    	else if (r.getOrientation() == 2){ // if robot is facing left
-	    		if (x1 == x2 && y1-1 == y2) {
-		    		System.out.print("Turn right");
-		    		r.setOrientation(r.orientation);
-		    	}
-		    	else if (x1-1 == x2 && y1 == y2) {
-		    		System.out.print("Forward");
-		    		
-		    	}
-		    	else if (x1 == x2 && y1+1 == y2) {
-		    		System.out.print("Turn left");
-		    	}
-	    	}
-		    	
+	        System.out.print(id.getMovement()+ " ");
+	       // System.out.print(id.getX() + " " + id.getY() + " " + id.getDirection()+ " ");
 	    }
 	    System.out.println("");
 	}
 	
-	public int getPathCost(Location target) {
+	public double getPathCost(Location target) {
 		Location n = target;
-		int cost = 0;
-	 
+		double cost = n.f;
+
 		List<Location> ids = new ArrayList<>();
 	    ids.add(n);
 	    while(n.parent != null){
-	        ids.add(n.parent);
+	        ids.add(n.parent);	        
 	        n = n.parent;
+	        cost += n.f;
 	    }
 	    Collections.reverse(ids);
-	    for (int i=0; i<ids.size()-1; i++) {
-	    	int x1 = ids.get(i).getX();
-	    	int y1 = ids.get(i).getY();
-	    	int x2 = ids.get(i+1).getX();
-	    	int y2 = ids.get(i+1).getY();
-	    	if (r.getOrientation() == 0) {
-	    		if (x1 == x2 && y1-1 == y2) {
-		    		System.out.print("Forward");
-		    		cost += 1;
-		    	}
-		    	else if (x1+1 == x2 && y1 == y2) {
-		    		System.out.print("Turn right");
-		    		cost += 1;
-		    		r.setOrientation(r.orientation.EAST);
-		    	}
-		    	else if (x1-1 == x2 && y1 == y2) {
-		    		System.out.print("Turn left");
-		    		r.setOrientation(r.orientation.WEST);
-		    	}
-	    	}
-	    	else if (r.getOrientation() == 1){ // if robot is facing right
-	    		if (x1 == x2 && y1-1 == y2) {
-		    		System.out.print("Turn left");
-		    		r.setOrientation(r.orientation.WEST);
-		    	}
-		    	else if (x1+1 == x2 && y1 == y2) {
-		    		System.out.print("Forward");
-		    		
-		    	}
-		    	else if (x1 == x2 && y1+1 == y2) {
-		    		System.out.print("Turn right");
-		    	}
-	    	}
-	    	else if (r.getOrientation() == 1){ // if robot is facing right
-	    		if (x1 == x2 && y1-1 == y2) {
-		    		System.out.print("Turn left");
-		    		r.setOrientation(r.orientation);
-		    	}
-		    	else if (x1+1 == x2 && y1 == y2) {
-		    		System.out.print("Forward");
-		    		
-		    	}
-		    	else if (x1 == x2 && y1+1 == y2) {
-		    		System.out.print("Turn right");
-		    	}
-	    	}
-	    	else if (r.getOrientation() == 2){ // if robot is facing left
-	    		if (x1 == x2 && y1-1 == y2) {
-		    		System.out.print("Turn right");
-		    		r.setOrientation(r.orientation.EAST);
-		    	}
-		    	else if (x1-1 == x2 && y1 == y2) {
-		    		System.out.print("Forward");
-		    		
-		    	}
-		    	else if (x1 == x2 && y1+1 == y2) {
-		    		System.out.print("Turn left");
-		    	}
-	    	}		
-	    }
+//	    for (int i=0; i<ids.size()-1; i++) {
+//	    	int x1 = ids.get(i).getX();
+//	    	int y1 = ids.get(i).getY();
+//	    	int x2 = ids.get(i+1).getX();
+//	    	int y2 = ids.get(i+1).getY();
+//	    	if (r.getOrientation() == 'N') {
+//	    		if (x1 == x2 && y1-1 == y2) {
+//		    		//System.out.print("Forward");
+//		    		cost += 1;
+//		    	}
+//		    	else if (x1+2 == x2 && y1 == y2) {
+//		    		//System.out.print("Turn right");
+//		    		cost += 5;
+//		    		r.setOrientation('E');
+//		    	}
+//		    	else if (x1 == x2 && y1+2 == y2) {
+//		    		//System.out.print("Turn left");
+//		    		cost+=5;
+//		    		r.setOrientation('W');
+//		    	}
+//		    	else {
+//		    		cost+=1;
+//		    	}
+//	    	}
+//	    	else if (r.getOrientation() == 'E'){ // if robot is facing right
+//	    		if (x1-2 == x2 && y1 == y2) {
+//		    		//System.out.print("Turn left");
+//	    			r.setOrientation('N');
+//		    		cost+=5;
+//		    	}
+//		    	else if (x1+1 == x2 && y1 == y2) {
+//		    		//System.out.print("Forward");
+//		    		cost +=1;
+//		    	}
+//		    	else if (x1 == x2 && y1+2 == y2) {
+//		    		//System.out.print("Turn right");
+//		    		cost += 5;
+//		    		r.setOrientation('S');
+//		    	}
+//		    	else {
+//		    		cost+=1;
+//		    	}
+//	    	}
+//	    	else if (r.getOrientation() == 'W'){ // if robot is facing left
+//	    		if (x1+2 == x2 && y1 == y2) {
+//		    		//System.out.print("Turn left");
+//		    		r.setOrientation('S');
+//		    		cost += 5;
+//		    	}
+//		    	else if (x1-1 == x2 && y1 == y2) {
+//		    		//System.out.print("Forward");
+//		    		cost+=1;		    		
+//		    	}
+//		    	else if (x1 == x2 && y1-2 == y2) {
+//		    		//System.out.print("Turn right");
+//		    		r.setOrientation('N');
+//		    		cost += 5;
+//		    	}
+//		    	else {
+//		    		cost+=1;
+//		    	}
+//	    	}
+//	    	else if (r.getOrientation() == 'S'){ // if robot is facing down
+//	    		if (x1 == x2 && y1-2 == y2) {
+//		    		//System.out.print("Turn right");
+//		    		r.setOrientation('W');
+//		    		cost += 5;
+//		    	}
+//		    	else if (x1 == x2 && y1+1 == y2) {
+//		    		//System.out.print("Forward");
+//		    		cost +=1;		    		
+//		    	}
+//		    	else if (x1 == x2 && y1-2 == y2) {
+//		    		//System.out.print("Turn left");
+//		    		r.setOrientation('E');
+//		    		cost += 5;
+//		    	}
+//		    	else {
+//		    		cost +=1;
+//		    	}
+//	    	}		
+//	    }
 	    
 	    // If the robot orientation is not correct, need to rotate direction
 		return cost;
@@ -224,20 +188,27 @@ public class Explore {
 //		}
 		//System.out.println(distances);
 		Location next_location = new Location();
-		int min_cost = 9999;
+		Location returned_location = new Location();
+		double min_cost = 999999;
 		for (Location obstacleLocation : robotGoalLocations) {
 			if (Visited.contains(obstacleLocation)) {
+//				System.out.println("Location visited");
+//				System.out.println(obstacleLocation.getX());
+//				System.out.println(obstacleLocation.getY());
 				continue;
 			}
-			System.out.println("Test");
-			System.out.println(startingLocation.getX() + startingLocation.getY() );
+//			System.out.println(startingLocation.getX());
+//			System.out.println(startingLocation.getY());
 			Location target = this.aStar(startingLocation,  obstacleLocation);
+//			System.out.println(target.getX());
+//			System.out.println(target.getY());
 //			System.out.println(target);
-			this.printPath(target);
-			int cost = this.getPathCost(target);
+			//this.printPath(target);
+			double cost = this.getPathCost(target);
 			if (cost < min_cost) {
 				min_cost = cost;
 				next_location = obstacleLocation;
+				returned_location = target;
 			}
 			
 //			int x = obstacleLocation.getX();
@@ -250,8 +221,10 @@ public class Explore {
 //				next_location = obstacleLocation;
 //			}
 		}
+		this.printPath(returned_location);
 		this.startingLocation = next_location;
 		this.Visited.add(next_location);
+		this.openList.clear();
 		return next_location;
 	}
 	
@@ -259,22 +232,23 @@ public class Explore {
 	public Explore() {
 	}
 	public Explore(List<Location> obstacleLocations2) {
+		this.openList = new PriorityQueue<Location>(new locationComparator());
 		for (Location obstacleLocation : obstacleLocations2) {
 			int direction = obstacleLocation.getDirection();
 			int x = obstacleLocation.getX();
 			int y = obstacleLocation.getY();
 			
-			if (direction == 0) { //North
-				robotGoalLocations.add(new Location(x,y-2, 'S'));
-			} else if (direction == 1) { // East
-				robotGoalLocations.add(new Location(x+2,y, 'W'));
-			} else if (direction == 2) { // South
+			if (direction == 'N') { //North
+				robotGoalLocations.add(new Location(x+1,y-2, 'S'));
+			} else if (direction == 'E') { // East
+				robotGoalLocations.add(new Location(x+2,y+1, 'W'));
+			} else if (direction == 'S') { // South
 				robotGoalLocations.add(new Location(x-1,y+2, 'N'));
 			} else { // West
-				robotGoalLocations.add(new Location(x-2,y, 'E'));
+				robotGoalLocations.add(new Location(x-2,y-1, 'E'));
 			}
 		}
-		startingLocation = new Location(0,17);
+		startingLocation = new Location(0,17, 'N');
 	}
 	
 

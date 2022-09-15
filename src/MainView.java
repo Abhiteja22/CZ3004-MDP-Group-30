@@ -67,11 +67,11 @@ public class MainView extends JPanel {
 	private void setObstacles() {
 //		Location obstacleLocation = new Location(x,y);
 //		obstacleLocations.add(obstacleLocation);
-		obstacleLocations.add(new Location(4,10,'S'));
-//		obstacleLocations.add(new Location(10,10,3));
-//		obstacleLocations.add(new Location(7,1,1));
-//		obstacleLocations.add(new Location(15,15,0));
-//		obstacleLocations.add(new Location(1,8,1));
+		obstacleLocations.add(new Location(5,10,'S'));
+		obstacleLocations.add(new Location(10,10,'E'));
+		obstacleLocations.add(new Location(7,1,'S'));
+		obstacleLocations.add(new Location(12,15,'E'));
+		obstacleLocations.add(new Location(5,8,'W'));
 	}
 	
 	private void calculateDimensions() {
@@ -117,11 +117,11 @@ public class MainView extends JPanel {
 		int robotHeight = gridHeight * 3;
 		g.fillOval(robotExactLocation.getX(), robotExactLocation.getY(), robotWidth, robotHeight);
 		g.setColor(Color.red);
-		if (robot.getOrientation() == 0) {
+		if (robot.getOrientation() == 'N') {
 			g.fillRect(robotExactLocation.getX()+gridWidth, robotExactLocation.getY(), gridWidth, gridHeight);
-		} else if (robot.getOrientation() == 1) {
+		} else if (robot.getOrientation() == 'E') {
 			g.fillRect(robotExactLocation.getX()+(gridWidth*2), robotExactLocation.getY()+gridHeight, gridWidth, gridHeight);
-		} else if (robot.getOrientation() == 2) {
+		} else if (robot.getOrientation() == 'W') {
 			g.fillRect(robotExactLocation.getX()+gridWidth, robotExactLocation.getY()+(gridHeight*2), gridWidth, gridHeight);
 		} else {
 			g.fillRect(robotExactLocation.getX(), robotExactLocation.getY()+gridHeight, gridWidth, gridHeight);
@@ -145,11 +145,11 @@ public class MainView extends JPanel {
 			int x = obstacleLocation.getX() * gridWidth;
 			int y = obstacleLocation.getY() * gridHeight;
 			
-			if (direction == 0) { //North
+			if (direction == 'N') { //North
 				g.fillRect(x,y-5,gridWidth,5);
-			} else if (direction == 1) { // East
+			} else if (direction == 'E') { // East
 				g.fillRect(x+gridWidth,y,5,gridHeight);
-			} else if (direction == 2) { // South
+			} else if (direction == 'S') { // South
 				g.fillRect(x,y+gridHeight,gridWidth,5);
 			} else { // West
 				g.fillRect(x-5,y,5,gridHeight);
