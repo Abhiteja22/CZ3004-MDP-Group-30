@@ -100,7 +100,7 @@ public class Location {
 		//		Location rightLocation = new Location();
 		//		Location backLocation = new Location();
 		if (n.direction == 'N') {
-			frontLocation = new Location(n.getX(),n.getY()-1, 'N', 'f');
+			Location frontLocation = new Location(n.getX(),n.getY()-1, 'N', 'f');
 			Location backLocation = new Location(n.getX(),n.getY()+1, 'N', 'b');
 			Location leftLocation = new Location(n.getX(),n.getY()+2, 'W', 'l');
 			Location rightLocation = new Location(n.getX()+2,n.getY(), 'E', 'r');
@@ -120,7 +120,7 @@ public class Location {
 			rightLocation.g = 5;
 		}
 		else if (n.direction == 'E') {
-			frontLocation = new Location(n.getX()+1,n.getY(), 'E', 'f');
+			Location frontLocation = new Location(n.getX()+1,n.getY(), 'E', 'f');
 			Location backLocation = new Location(n.getX()-1,n.getY()+1, 'E', 'b');
 			Location leftLocation = new Location(n.getX()-2,n.getY(), 'N', 'l');
 			Location rightLocation = new Location(n.getX(),n.getY()+2, 'S', 'r');
@@ -140,7 +140,7 @@ public class Location {
 			rightLocation.g = 5;
 		}
 		else if (n.direction == 'W') {
-			frontLocation = new Location(n.getX() - 1,n.getY()-1, 'W', 'f');
+			Location frontLocation = new Location(n.getX() - 1,n.getY()-1, 'W', 'f');
 			Location backLocation = new Location(n.getX()+1,n.getY()+1, 'W', 'b');
 			Location leftLocation = new Location(n.getX()+2,n.getY(), 'S', 'l');
 			Location rightLocation = new Location(n.getX(),n.getY()-2, 'N', 'r');
@@ -160,7 +160,7 @@ public class Location {
 			rightLocation.g = 5;
 		}
 		else {
-			frontLocation = new Location(n.getX(),n.getY()+1, 'S', 'f');
+			Location frontLocation = new Location(n.getX(),n.getY()+1, 'S', 'f');
 			Location backLocation = new Location(n.getX(),n.getY()-1, 'S', 'b');
 			Location leftLocation = new Location(n.getX(),n.getY()-2, 'E', 'l');
 			Location rightLocation = new Location(n.getX()-2,n.getY(), 'W', 'r');
