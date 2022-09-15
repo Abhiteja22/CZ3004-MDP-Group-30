@@ -95,64 +95,88 @@ public class Location {
 		// TODO Auto-generated method stub
 		//Find north location
 		ArrayList<Location> locationList = new ArrayList<>();
-//		Location frontLocation = new Location();
-//		Location leftLocation = new Location();
-//		Location rightLocation = new Location();
-//		Location backLocation = new Location();
+		//		Location frontLocation = new Location();
+		//		Location leftLocation = new Location();
+		//		Location rightLocation = new Location();
+		//		Location backLocation = new Location();
 		if (n.direction == 'N') {
-			Location frontLocation = new Location(n.getX(),n.getY()-1, 'N', 'f');
+			frontLocation = new Location(n.getX(),n.getY()-1, 'N', 'f');
 			Location backLocation = new Location(n.getX(),n.getY()+1, 'N', 'b');
 			Location leftLocation = new Location(n.getX(),n.getY()+2, 'W', 'l');
-			Location rightLocation = new Location(n.getX()+2,n.getY(), 'E', 'r');	
-			locationList.add(frontLocation);
+			Location rightLocation = new Location(n.getX()+2,n.getY(), 'E', 'r');
+			
+			// For Invalid Locations
+			if (n.getY() != 0) { // At top, cannot go forward
+				locationList.add(frontLocation);
+			}
+			if (!(n.getY() >= 17)) { // At bottom, cannot go backward
+				locationList.add(backLocation);
+				backLocation.g = 10;
+			}
+			
 			leftLocation.g = 5;
 			locationList.add(leftLocation);
 			locationList.add(rightLocation);
 			rightLocation.g = 5;
-			locationList.add(backLocation);
-			backLocation.g = 10;
-			
 		}
 		else if (n.direction == 'E') {
-			Location frontLocation = new Location(n.getX()+1,n.getY(), 'E', 'f');
+			frontLocation = new Location(n.getX()+1,n.getY(), 'E', 'f');
 			Location backLocation = new Location(n.getX()-1,n.getY()+1, 'E', 'b');
 			Location leftLocation = new Location(n.getX()-2,n.getY(), 'N', 'l');
 			Location rightLocation = new Location(n.getX(),n.getY()+2, 'S', 'r');
-			locationList.add(frontLocation);
+			
+			// For Invalid Locations
+			if (n.getX() != 19) { // At right side, cannot go forward
+				locationList.add(frontLocation);
+			}
+			if (!(n.getX() <= 2)) { // At Left side, cannot go backward
+				locationList.add(backLocation);
+				backLocation.g = 10;
+			}
+			
 			leftLocation.g = 5;
 			locationList.add(leftLocation);
 			locationList.add(rightLocation);
 			rightLocation.g = 5;
-			locationList.add(backLocation);
-			backLocation.g = 10;
 		}
 		else if (n.direction == 'W') {
-			Location frontLocation = new Location(n.getX() - 1,n.getY()-1, 'W', 'f');
+			frontLocation = new Location(n.getX() - 1,n.getY()-1, 'W', 'f');
 			Location backLocation = new Location(n.getX()+1,n.getY()+1, 'W', 'b');
 			Location leftLocation = new Location(n.getX()+2,n.getY(), 'S', 'l');
 			Location rightLocation = new Location(n.getX(),n.getY()-2, 'N', 'r');
-			locationList.add(frontLocation);
+			
+			// For Invalid Locations
+			if (n.getX() != 0) { // At Left side, cannot go forward
+				locationList.add(frontLocation);
+			}
+			if (!(n.getX() >= 17)) { // At Right side, cannot go backward
+				locationList.add(backLocation);
+				backLocation.g = 10;
+			}
+			
 			leftLocation.g = 5;
 			locationList.add(leftLocation);
 			locationList.add(rightLocation);
 			rightLocation.g = 5;
-			locationList.add(backLocation);
-			backLocation.g = 10;
 		}
 		else {
-			Location frontLocation = new Location(n.getX(),n.getY()+1, 'S', 'f');
+			frontLocation = new Location(n.getX(),n.getY()+1, 'S', 'f');
 			Location backLocation = new Location(n.getX(),n.getY()-1, 'S', 'b');
 			Location leftLocation = new Location(n.getX(),n.getY()-2, 'E', 'l');
 			Location rightLocation = new Location(n.getX()-2,n.getY(), 'W', 'r');
-			locationList.add(frontLocation);
+			
+			// For Invalid Locations
+			if (n.getY() != 19) { // At bottom, cannot go forward
+				locationList.add(frontLocation);
+			}
+			if (!(n.getY() <= 2)) { // At top, cannot go backward
+				locationList.add(backLocation);
+				backLocation.g = 10;
+			}		
 			leftLocation.g = 5;
 			locationList.add(leftLocation);
 			locationList.add(rightLocation);
 			rightLocation.g = 5;
-			locationList.add(backLocation);
-			backLocation.g = 10;
-
-			
 		}
 		
 		
