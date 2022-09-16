@@ -22,9 +22,8 @@ public class Location {
     public double h;
 	public Location parent = null;
 	public double weight;
-	public double extraCost;
-	public double distance = 0; 
-	
+	public double extraCost; 
+	public char distance = 0;
 	public int getX() {
 		return this.x;
 	}
@@ -112,8 +111,7 @@ public class Location {
 			rightLocation.g = 5;
 			locationList.add(backLocation);
 			backLocation.g = 10;
-			frontLocation.distance = 1;
-			backLocation.distance = 1;
+	
 			
 		}
 		else if (n.direction == 'E') {

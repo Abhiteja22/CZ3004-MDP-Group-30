@@ -50,7 +50,9 @@ public class MainView extends JPanel {
 		Explore explore = new Explore(obstacleLocations);
 		for (int i=0; i<obstacleLocations.size(); i++) {
 			Location nextLocation = explore.nearestNeighbour();
+			System.out.println(nextLocation);
 			List<Character> robotPath = explore.printPath(nextLocation);
+			
 			nextLocation.print();
 			for (char direction : robotPath) {
 				System.out.println("Test");

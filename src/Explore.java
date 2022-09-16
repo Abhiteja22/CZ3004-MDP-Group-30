@@ -208,9 +208,9 @@ public class Explore {
 //			System.out.println(target.getX());
 //			System.out.println(target.getY());
 //			System.out.println(target);
-			this.printPath(target);
+			//this.printPath(target);
 			double cost = this.getPathCost(target);
-			System.out.println(cost);
+			//System.out.println(cost);
 			if (cost < min_cost) {
 				min_cost = cost;
 				next_location = obstacleLocation;
@@ -227,10 +227,11 @@ public class Explore {
 //				next_location = obstacleLocation;
 //			}
 		}
-		//this.printPath(returned_location);
+		this.printPath(returned_location);
 		this.startingLocation = next_location;
 		this.Visited.add(next_location);
 		this.openList.clear();
+		System.out.println(next_location);
 		return next_location;
 	}
 	
