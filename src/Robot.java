@@ -1,4 +1,4 @@
-//package mdp_test_own;
+package mdp_git_latest;
 
 /*
 import lombok.AllArgsConstructor;
@@ -52,44 +52,44 @@ public class Robot {
 		this.orientation = c;
 	}
 	
-//	public void moveForward() { //Adjust it such that it cannot move forward when facing edges
-//		Location currentLocation = this.getCurrentGridCell().getLocation();
-//		
-//		Location newLocation = new Location();
-//		if (this.orientation == Orientation.NORTH) {
-//			newLocation = new Location(currentLocation.getX(), currentLocation.getY()-1);
-//		} else if (this.orientation == Orientation.EAST) {
-//			newLocation = new Location(currentLocation.getX()+1, currentLocation.getY());
-//		} else if (this.orientation == Orientation.WEST) {
-//			newLocation = new Location(currentLocation.getX()-1, currentLocation.getY());
-//		} else {
-//			newLocation = new Location(currentLocation.getX(), currentLocation.getY()+1);
-//		}
-//		
-//		this.setCurrentGridCell(newLocation, false);
-//	}
-//	
-//	public void turnRight() {
-//		if (this.orientation == Orientation.NORTH) {
-//			this.setOrientation(Orientation.EAST);
-//		} else if (this.orientation == Orientation.EAST) {
-//			this.setOrientation(Orientation.SOUTH);
-//		} else if (this.orientation == Orientation.WEST) {
-//			this.setOrientation(Orientation.NORTH);
-//		} else {
-//			this.setOrientation(Orientation.WEST);
-//		}
-//	}
-//	
-//	public void turnLeft() {
-//		if (this.orientation == Orientation.NORTH) {
-//			this.setOrientation(Orientation.WEST);
-//		} else if (this.orientation == Orientation.EAST) {
-//			this.setOrientation(Orientation.NORTH);
-//		} else if (this.orientation == Orientation.WEST) {
-//			this.setOrientation(Orientation.SOUTH);
-//		} else {
-//			this.setOrientation(Orientation.EAST);
-//		}
-//	}
+	public void moveForward() { //Adjust it such that it cannot move forward when facing edges
+		Location currentLocation = this.getCurrentGridCell().getLocation();
+		
+		Location newLocation = new Location();
+		if (this.orientation == 'N') {
+			newLocation = new Location(currentLocation.getX(), currentLocation.getY()-1);
+		} else if (this.orientation == 'E') {
+			newLocation = new Location(currentLocation.getX()+1, currentLocation.getY());
+		} else if (this.orientation == 'W') {
+			newLocation = new Location(currentLocation.getX()-1, currentLocation.getY());
+		} else {
+			newLocation = new Location(currentLocation.getX(), currentLocation.getY()+1);
+		}
+		
+		this.setCurrentGridCell(newLocation, false);
+	}
+	
+	public void turnRight() {
+		if (this.orientation == 'N') {
+			this.setOrientation('E');
+		} else if (this.orientation == 'E') {
+			this.setOrientation('S');
+		} else if (this.orientation == 'W') {
+			this.setOrientation('N');
+		} else {
+			this.setOrientation('W');
+		}
+	}
+	
+	public void turnLeft() {
+		if (this.orientation == 'N') {
+			this.setOrientation('W');
+		} else if (this.orientation == 'E') {
+			this.setOrientation('N');
+		} else if (this.orientation == 'W') {
+			this.setOrientation('S');
+		} else {
+			this.setOrientation('E');
+		}
+	}
 }

@@ -1,4 +1,4 @@
-//package mdp_test_own;
+package mdp_git_latest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +11,7 @@ public class Explore {
 	private Location startingLocation;	
 	private Robot r = new Robot();
 	private PriorityQueue<Location> openList;
+	private List<Location> blockedLocations = new ArrayList<Location>(); // For Obstacles
 	
 	public Location aStar(Location start, Location target){
 	    ArrayList<Location> closedList = new ArrayList<>();
@@ -26,7 +27,7 @@ public class Explore {
 	            return n;
 	        }
 
-	        for(Location  edge : n.getNeighbors(n)){
+	        for(Location  edge : n.getNeighbors(n, blockedLocations)){
 	            Location m = edge;
 	            double totalWeight = n.g + m.g;
 
@@ -55,12 +56,12 @@ public class Explore {
 	    return null;
 	}
 
-	public void printPath(Location target){
+	public ArrayList<Character> printPath(Location target){
 	    Location n = target;
 
-	    if(n==null)
-	        return;
-
+//	    if(n==null)
+//	        return;
+	    ArrayList<Character> robotPath = new ArrayList<Character>();
 	    List<Location> ids = new ArrayList<>();
 	    ids.add(n);
 	    while(n.parent != null){
@@ -72,9 +73,12 @@ public class Explore {
 
 	    for(Location id : ids){
 	        System.out.print(id.getMovement()+ " ");
-	       // System.out.print(id.getX() + " " + id.getY() + " " + id.getDirection()+ " ");
+	        robotPath.add(id.getMovement());
+	       //System.out.print(id.getX() + " " + id.getY() + " " + id.getDirection()+ " ");
 	    }
 	    System.out.println("");
+	    
+	    return robotPath;
 	}
 	
 	public double getPathCost(Location target) {
@@ -222,10 +226,13 @@ public class Explore {
 //			}
 		}
 		this.printPath(returned_location);
+		System.out.println(returned_location);
+
 		this.startingLocation = next_location;
 		this.Visited.add(next_location);
 		this.openList.clear();
-		return next_location;
+		returned_location.print();
+		return returned_location;
 	}
 	
 	
@@ -247,8 +254,20 @@ public class Explore {
 			} else { // West
 				robotGoalLocations.add(new Location(x-2,y-1, 'E'));
 			}
+			
+			// For Blocked Locations
+			blockedLocations.add(new Location(x-1,y-1));
+			blockedLocations.add(new Location(x,y-1));
+			blockedLocations.add(new Location(x+1,y-1));
+			blockedLocations.add(new Location(x-1,y));
+			blockedLocations.add(new Location(x,y));
+			blockedLocations.add(new Location(x+1,y));
+			blockedLocations.add(new Location(x-1,y+1));
+			blockedLocations.add(new Location(x,y+1));
+			blockedLocations.add(new Location(x+1,y+1));
 		}
 		startingLocation = new Location(0,17, 'N');
+		
 	}
 	
 
