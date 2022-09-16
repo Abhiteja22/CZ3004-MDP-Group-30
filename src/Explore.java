@@ -55,11 +55,11 @@ public class Explore {
 	    return null;
 	}
 
-	public void printPath(Location target){
+	public List<Character> printPath(Location target){
 	    Location n = target;
-
+	    List<Character> robotPath = new ArrayList<Character>();
 	    if(n==null)
-	        return;
+	        return robotPath;
 
 	    List<Location> ids = new ArrayList<>();
 	    ids.add(n);
@@ -72,21 +72,25 @@ public class Explore {
 
 	    for(Location id : ids){
 	        System.out.print(id.getMovement()+ " ");
+		    robotPath.add(id.getMovement());
+
 	       // System.out.print(id.getX() + " " + id.getY() + " " + id.getDirection()+ " ");
 	    }
 	    System.out.println("");
+	    return robotPath;
 	}
 	
 	public double getPathCost(Location target) {
 		Location n = target;
-		double cost = n.f;
-
+		//double cost = n.f;
+		double cost = 0;
 		List<Location> ids = new ArrayList<>();
 	    ids.add(n);
 	    while(n.parent != null){
 	        ids.add(n.parent);	        
 	        n = n.parent;
-	        cost += n.f;
+	        //cost += n.h;
+	        cost += n.distance;
 	    }
 	    Collections.reverse(ids);
 //	    for (int i=0; i<ids.size()-1; i++) {
@@ -190,6 +194,7 @@ public class Explore {
 		Location next_location = new Location();
 		Location returned_location = new Location();
 		double min_cost = 999999;
+		
 		for (Location obstacleLocation : robotGoalLocations) {
 			if (Visited.contains(obstacleLocation)) {
 //				System.out.println("Location visited");
@@ -203,8 +208,9 @@ public class Explore {
 //			System.out.println(target.getX());
 //			System.out.println(target.getY());
 //			System.out.println(target);
-			//this.printPath(target);
+			this.printPath(target);
 			double cost = this.getPathCost(target);
+			System.out.println(cost);
 			if (cost < min_cost) {
 				min_cost = cost;
 				next_location = obstacleLocation;
@@ -221,7 +227,7 @@ public class Explore {
 //				next_location = obstacleLocation;
 //			}
 		}
-		this.printPath(returned_location);
+		//this.printPath(returned_location);
 		this.startingLocation = next_location;
 		this.Visited.add(next_location);
 		this.openList.clear();
