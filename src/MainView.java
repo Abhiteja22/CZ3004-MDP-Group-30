@@ -79,13 +79,16 @@ public class MainView extends JPanel {
 	
 	private class MoveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (path.isEmpty()) {
-				t.stop();
-				return;
-			}
 			if (path.get(0).isEmpty()) {
 				path.remove(0);
 			}
+			
+			if (path.isEmpty()) {
+				System.out.println("Path exploration Complete");
+				t.stop();
+				return;
+			}
+			
 			char i = path.get(0).get(0);
 			path.get(0).remove(0);
 			System.out.println(i);
@@ -205,9 +208,9 @@ public class MainView extends JPanel {
 		} else if (robot.getOrientation() == 'E') {
 			g.fillRect(robotExactLocation.getX()+(gridWidth*2), robotExactLocation.getY()+gridHeight, gridWidth, gridHeight);
 		} else if (robot.getOrientation() == 'W') {
-			g.fillRect(robotExactLocation.getX()+gridWidth, robotExactLocation.getY()+(gridHeight*2), gridWidth, gridHeight);
-		} else {
 			g.fillRect(robotExactLocation.getX(), robotExactLocation.getY()+gridHeight, gridWidth, gridHeight);
+		} else {
+			g.fillRect(robotExactLocation.getX()+gridWidth, robotExactLocation.getY()+(gridHeight*2), gridWidth, gridHeight);
 		}
 //		g.fillOval(0, 0, robotWidth, robotHeight);
 	}
