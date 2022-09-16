@@ -1,4 +1,4 @@
-//package mdp_test_own;
+//package mdp_git_latest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,9 +11,10 @@ public class Explore {
 	private Location startingLocation;	
 	private Robot r = new Robot();
 	private PriorityQueue<Location> openList;
-	
+	private List<Location> blockedLocations = new ArrayList<Location>(); // For Obstacles
+    private ArrayList<Location> closedList = new ArrayList<>();
+
 	public Location aStar(Location start, Location target){
-	    ArrayList<Location> closedList = new ArrayList<>();
 	    //ArrayList<Location> openList = new ArrayList<>();
 	    
 	    start.f = start.g + start.calculateHeuristic(start, target);
@@ -26,7 +27,7 @@ public class Explore {
 	            return n;
 	        }
 
-	        for(Location  edge : n.getNeighbors(n)){
+	        for(Location  edge : n.getNeighbors(n, blockedLocations)){
 	            Location m = edge;
 	            double totalWeight = n.g + m.g;
 
@@ -55,12 +56,12 @@ public class Explore {
 	    return null;
 	}
 
-	public List<Character> printPath(Location target){
+	public ArrayList<Character> printPath(Location target){
 	    Location n = target;
-	    List<Character> robotPath = new ArrayList<Character>();
-	    if(n==null)
-	        return robotPath;
 
+//	    if(n==null)
+//	        return;
+	    ArrayList<Character> robotPath = new ArrayList<Character>();
 	    List<Location> ids = new ArrayList<>();
 	    ids.add(n);
 	    while(n.parent != null){
@@ -72,11 +73,12 @@ public class Explore {
 
 	    for(Location id : ids){
 	        System.out.print(id.getMovement()+ " ");
-		    robotPath.add(id.getMovement());
 
-	       // System.out.print(id.getX() + " " + id.getY() + " " + id.getDirection()+ " ");
+	        robotPath.add(id.getMovement());
+	        System.out.println(id.getX() + " " + id.getY() + " " + id.getDirection()+ " ");
 	    }
 	    System.out.println("");
+	    
 	    return robotPath;
 	}
 	
@@ -93,103 +95,12 @@ public class Explore {
 	        cost += n.distance;
 	    }
 	    Collections.reverse(ids);
-//	    for (int i=0; i<ids.size()-1; i++) {
-//	    	int x1 = ids.get(i).getX();
-//	    	int y1 = ids.get(i).getY();
-//	    	int x2 = ids.get(i+1).getX();
-//	    	int y2 = ids.get(i+1).getY();
-//	    	if (r.getOrientation() == 'N') {
-//	    		if (x1 == x2 && y1-1 == y2) {
-//		    		//System.out.print("Forward");
-//		    		cost += 1;
-//		    	}
-//		    	else if (x1+2 == x2 && y1 == y2) {
-//		    		//System.out.print("Turn right");
-//		    		cost += 5;
-//		    		r.setOrientation('E');
-//		    	}
-//		    	else if (x1 == x2 && y1+2 == y2) {
-//		    		//System.out.print("Turn left");
-//		    		cost+=5;
-//		    		r.setOrientation('W');
-//		    	}
-//		    	else {
-//		    		cost+=1;
-//		    	}
-//	    	}
-//	    	else if (r.getOrientation() == 'E'){ // if robot is facing right
-//	    		if (x1-2 == x2 && y1 == y2) {
-//		    		//System.out.print("Turn left");
-//	    			r.setOrientation('N');
-//		    		cost+=5;
-//		    	}
-//		    	else if (x1+1 == x2 && y1 == y2) {
-//		    		//System.out.print("Forward");
-//		    		cost +=1;
-//		    	}
-//		    	else if (x1 == x2 && y1+2 == y2) {
-//		    		//System.out.print("Turn right");
-//		    		cost += 5;
-//		    		r.setOrientation('S');
-//		    	}
-//		    	else {
-//		    		cost+=1;
-//		    	}
-//	    	}
-//	    	else if (r.getOrientation() == 'W'){ // if robot is facing left
-//	    		if (x1+2 == x2 && y1 == y2) {
-//		    		//System.out.print("Turn left");
-//		    		r.setOrientation('S');
-//		    		cost += 5;
-//		    	}
-//		    	else if (x1-1 == x2 && y1 == y2) {
-//		    		//System.out.print("Forward");
-//		    		cost+=1;		    		
-//		    	}
-//		    	else if (x1 == x2 && y1-2 == y2) {
-//		    		//System.out.print("Turn right");
-//		    		r.setOrientation('N');
-//		    		cost += 5;
-//		    	}
-//		    	else {
-//		    		cost+=1;
-//		    	}
-//	    	}
-//	    	else if (r.getOrientation() == 'S'){ // if robot is facing down
-//	    		if (x1 == x2 && y1-2 == y2) {
-//		    		//System.out.print("Turn right");
-//		    		r.setOrientation('W');
-//		    		cost += 5;
-//		    	}
-//		    	else if (x1 == x2 && y1+1 == y2) {
-//		    		//System.out.print("Forward");
-//		    		cost +=1;		    		
-//		    	}
-//		    	else if (x1 == x2 && y1-2 == y2) {
-//		    		//System.out.print("Turn left");
-//		    		r.setOrientation('E');
-//		    		cost += 5;
-//		    	}
-//		    	else {
-//		    		cost +=1;
-//		    	}
-//	    	}		
-//	    }
 	    
 	    // If the robot orientation is not correct, need to rotate direction
 		return cost;
 	}
 	// Find nearest neighbour at each step
 	public Location nearestNeighbour() {
-//		int startingx = startingLocation.getX();
-//		int startingy = startingLocation.getY();
-//		ArrayList<Integer> distances = new ArrayList<Integer>(5);
-//		for (int j=0;j<1;j++) {   //For each Location
-//			int x = robotGoalLocations.get(j).getX();
-//			int y = robotGoalLocations.get(j).getY();
-//			int distance = Math.abs((x-startingx)) + Math.abs((y-startingy));
-//			distances.add(distance);
-//		}
 		//System.out.println(distances);
 		Location next_location = new Location();
 		Location returned_location = new Location();
@@ -197,18 +108,11 @@ public class Explore {
 		
 		for (Location obstacleLocation : robotGoalLocations) {
 			if (Visited.contains(obstacleLocation)) {
-//				System.out.println("Location visited");
-//				System.out.println(obstacleLocation.getX());
-//				System.out.println(obstacleLocation.getY());
 				continue;
 			}
-//			System.out.println(startingLocation.getX());
-//			System.out.println(startingLocation.getY());
+
 			Location target = this.aStar(startingLocation,  obstacleLocation);
-//			System.out.println(target.getX());
-//			System.out.println(target.getY());
-//			System.out.println(target);
-			//this.printPath(target);
+
 			double cost = this.getPathCost(target);
 			//System.out.println(cost);
 			if (cost < min_cost) {
@@ -216,23 +120,16 @@ public class Explore {
 				next_location = obstacleLocation;
 				returned_location = target;
 			}
-			
-//			int x = obstacleLocation.getX();
-//			int y = obstacleLocation.getY();
-//			
-//			int distance = Math.abs((x-startingx)) + Math.abs((y-startingy));
-//			if (distance < min_distance) {
-//				System.out.println("Distance: "+ distance);
-//				min_distance = distance;
-//				next_location = obstacleLocation;
-//			}
 		}
-		this.printPath(returned_location);
+		//this.printPath(returned_location);
+		//System.out.println(returned_location);
+
 		this.startingLocation = next_location;
 		this.Visited.add(next_location);
 		this.openList.clear();
-		System.out.println(next_location);
-		return next_location;
+		this.closedList.clear();
+		returned_location.print();
+		return returned_location;
 	}
 	
 	
@@ -254,8 +151,20 @@ public class Explore {
 			} else { // West
 				robotGoalLocations.add(new Location(x-2,y-1, 'E'));
 			}
+			
+			// For Blocked Locations
+			blockedLocations.add(new Location(x-1,y-1));
+			blockedLocations.add(new Location(x,y-1));
+			blockedLocations.add(new Location(x+1,y-1));
+			blockedLocations.add(new Location(x-1,y));
+			blockedLocations.add(new Location(x,y));
+			blockedLocations.add(new Location(x+1,y));
+			blockedLocations.add(new Location(x-1,y+1));
+			blockedLocations.add(new Location(x,y+1));
+			blockedLocations.add(new Location(x+1,y+1));
 		}
 		startingLocation = new Location(0,17, 'N');
+		
 	}
 	
 

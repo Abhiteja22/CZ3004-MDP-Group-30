@@ -1,3 +1,5 @@
+//package mdp_git_latest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,15 @@ public class Location {
 		return otherLocation.getX() == x && otherLocation.getY() == y;
 	}
 	
+	public boolean checkLocation(List<Location> loc) { // returns false if location is inside loc
+		for (Location a : loc) {
+			if (this.isSameLocation(a)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public boolean isSameGoalLocation(Location otherLocation) {
 		return otherLocation.getX() == x && otherLocation.getY() == y && otherLocation.getDirection() == direction;
 	}
@@ -91,7 +102,7 @@ public class Location {
 		return null;
 	}
 
-	public List<Location> getNeighbors(Location n) {
+	public List<Location> getNeighbors(Location n, List<Location> loc) {
 		// TODO Auto-generated method stub
 		//Find north location
 		ArrayList<Location> locationList = new ArrayList<>();
@@ -101,66 +112,155 @@ public class Location {
 //		Location backLocation = new Location();
 		if (n.direction == 'N') {
 			Location frontLocation = new Location(n.getX(),n.getY()-1, 'N', 'f');
+			Location frontLocation1 = new Location(n.getX()+1,n.getY()-1, 'N', 'f');
+			Location frontLocation2 = new Location(n.getX()+2,n.getY()-1, 'N', 'f');
 			Location backLocation = new Location(n.getX(),n.getY()+1, 'N', 'b');
-			Location leftLocation = new Location(n.getX(),n.getY()+2, 'W', 'l');
-			Location rightLocation = new Location(n.getX()+2,n.getY(), 'E', 'r');	
-			locationList.add(frontLocation);
+			Location leftLocation = new Location(n.getX(),n.getY()+2, 'W', 'l');			
+			Location rightLocation = new Location(n.getX()+2,n.getY(), 'E', 'r');
 			leftLocation.g = 5;
 			locationList.add(leftLocation);
-			locationList.add(rightLocation);
 			rightLocation.g = 5;
-			locationList.add(backLocation);
-			backLocation.g = 10;
+			locationList.add(rightLocation);
+			//For Invalid Locations
+			if (n.getY() != 0) { // At top, cannot go forward
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) && frontLocation2.checkLocation(loc)) {
+					frontLocation.distance = 1;
+					locationList.add(frontLocation);
+				}
+			}
+			if (!(n.getY() >= 17)) { // At bottom, cannot go backward
+				if (backLocation.checkLocation(loc)) {
+					backLocation.g = 10;
+					backLocation.distance = 1;
+					locationList.add(backLocation);
+				}
+			}	
 	
-			
 		}
 		else if (n.direction == 'E') {
 			Location frontLocation = new Location(n.getX()+1,n.getY(), 'E', 'f');
-			Location backLocation = new Location(n.getX()-1,n.getY()+1, 'E', 'b');
+			Location frontLocation1 = new Location(n.getX()+1,n.getY()+1, 'N', 'f');
+			Location frontLocation2 = new Location(n.getX()+1,n.getY()+2, 'N', 'f');
+			Location backLocation = new Location(n.getX()-1,n.getY(), 'E', 'b');
 			Location leftLocation = new Location(n.getX()-2,n.getY(), 'N', 'l');
-			Location rightLocation = new Location(n.getX(),n.getY()+2, 'S', 'r');
-			locationList.add(frontLocation);
-			leftLocation.g = 5;
-			locationList.add(leftLocation);
-			locationList.add(rightLocation);
-			rightLocation.g = 5;
-			locationList.add(backLocation);
-			backLocation.g = 10;
-			frontLocation.distance = 1;
-			backLocation.distance = 1;
+			Location rightLocation = new Location(n.getX(),n.getY()+2, 'S', 'r');	
+//			locationList.add(frontLocation);
+//			locationList.add(backLocation);
+//			backLocation.g = 5;
+//			leftLocation.g = 5;
+//			locationList.add(leftLocation);
+//			rightLocation.g = 5;
+//			locationList.add(rightLocation);
+//			frontLocation.distance = 1;
+//			backLocation.distance = 1;
+			// For Invalid Locations
+			if (n.getX() != 19) { // At right side, cannot go forward
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) && frontLocation2.checkLocation(loc)) {
+					frontLocation.distance = 1;
+					locationList.add(frontLocation);
+				}
+			}
+			if (!(n.getX() <= 2)) { // At Left side, cannot go backward
+				if (backLocation.checkLocation(loc)) {
+					backLocation.g = 10;
+					backLocation.distance = 1;
+					locationList.add(backLocation);
+				}
+			}
+			
+			if (leftLocation.checkLocation(loc)) {
+				leftLocation.g = 5;
+				locationList.add(leftLocation);
+			}
+			if (rightLocation.checkLocation(loc)) {
+				rightLocation.g = 5;
+				locationList.add(rightLocation);
+			}
+
 		}
 		else if (n.direction == 'W') {
-			Location frontLocation = new Location(n.getX() - 1,n.getY()-1, 'W', 'f');
-			Location backLocation = new Location(n.getX()+1,n.getY()+1, 'W', 'b');
+			Location frontLocation = new Location(n.getX() - 1,n.getY(), 'W', 'f');
+			Location frontLocation1 = new Location(n.getX()-1,n.getY()-1, 'N', 'f');
+			Location frontLocation2 = new Location(n.getX()-1,n.getY()-2, 'N', 'f');
+			Location backLocation = new Location(n.getX()+1,n.getY(), 'W', 'b');
 			Location leftLocation = new Location(n.getX()+2,n.getY(), 'S', 'l');
 			Location rightLocation = new Location(n.getX(),n.getY()-2, 'N', 'r');
-			locationList.add(frontLocation);
-			leftLocation.g = 5;
-			locationList.add(leftLocation);
-			locationList.add(rightLocation);
-			rightLocation.g = 5;
-			locationList.add(backLocation);
-			backLocation.g = 10;
-			frontLocation.distance = 1;
-			backLocation.distance = 1;
+//			locationList.add(frontLocation);
+//			locationList.add(backLocation);
+//			backLocation.g = 5;
+//			leftLocation.g = 5;
+//			locationList.add(leftLocation);
+//			rightLocation.g = 5;
+//			locationList.add(rightLocation);
+//			frontLocation.distance = 1;
+//			backLocation.distance = 1;		
+			// For Invalid Locations
+			if (n.getX() != 0) { // At Left side, cannot go forward
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) && frontLocation2.checkLocation(loc)) {
+					frontLocation.distance = 1;					
+					locationList.add(frontLocation);					
+				}
+			}
+			if (!(n.getX() >= 17)) { // At Right side, cannot go backward
+				if (backLocation.checkLocation(loc)) {
+					backLocation.g = 10;
+					backLocation.distance = 1;
+					locationList.add(backLocation);
+				}
+			}
+			
+			if (leftLocation.checkLocation(loc)) {
+				leftLocation.g = 5;
+				locationList.add(leftLocation);
+			}
+			if (rightLocation.checkLocation(loc)) {
+				rightLocation.g = 5;
+				locationList.add(rightLocation);
+			}
+	
 		}
 		else {
 			Location frontLocation = new Location(n.getX(),n.getY()+1, 'S', 'f');
+			Location frontLocation1 = new Location(n.getX()-1,n.getY()+1, 'N', 'f');
+			Location frontLocation2 = new Location(n.getX()-2,n.getY()+1, 'N', 'f');
 			Location backLocation = new Location(n.getX(),n.getY()-1, 'S', 'b');
 			Location leftLocation = new Location(n.getX(),n.getY()-2, 'E', 'l');
 			Location rightLocation = new Location(n.getX()-2,n.getY(), 'W', 'r');
-			locationList.add(frontLocation);
-			leftLocation.g = 5;
-			locationList.add(leftLocation);
-			locationList.add(rightLocation);
-			rightLocation.g = 5;
-			locationList.add(backLocation);
-			backLocation.g = 10;
-			frontLocation.distance = 1;
-			backLocation.distance = 1;
+//			locationList.add(frontLocation);
+//			locationList.add(backLocation);
+//			backLocation.g = 10;
+//			leftLocation.g = 5;
+//			locationList.add(leftLocation);
+//			rightLocation.g = 5;
+//			locationList.add(rightLocation);
+//			frontLocation.distance = 1;
+//			backLocation.distance = 1;
+			// For Invalid Locations
+			// At bottom, cannot go forward
+			if (n.getY() != 19) { 
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) && frontLocation2.checkLocation(loc)) {
+					frontLocation.distance = 1;
+					locationList.add(frontLocation);
+				}
+			}
+			if (!(n.getY() <= 2)) { // At top, cannot go backward
+				if (backLocation.checkLocation(loc)) {
+					backLocation.g = 10;
+					backLocation.distance = 1;
+					locationList.add(backLocation);
+				}
+			}	
+			if (leftLocation.checkLocation(loc)) {
+				leftLocation.g = 5;
+				locationList.add(leftLocation);
+			}
+			if (rightLocation.checkLocation(loc)) {
+				rightLocation.g = 5;
+				locationList.add(rightLocation);
+			}
+
 			
 		}
-		
 		
 		return locationList;
 	}

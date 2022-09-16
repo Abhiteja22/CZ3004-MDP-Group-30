@@ -1,4 +1,4 @@
-//package mdp_test_own;
+//package mdp_git_latest;
 
 import java.util.ArrayList;
 
@@ -9,10 +9,16 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+
+
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -28,6 +34,9 @@ public class MainView extends JPanel {
 	private int gridWidth;
 	private int gridHeight;
 	private Robot robot = new Robot();
+	List<ArrayList<Character>> path = new ArrayList<ArrayList<Character>>();
+	
+	private Timer t;
 	
 	/**
 	 * Launch the application.
@@ -48,14 +57,78 @@ public class MainView extends JPanel {
 		populateGridCells();
 		System.out.println("Finished Populating Grid Cells.");
 		Explore explore = new Explore(obstacleLocations);
+		
 		for (int i=0; i<obstacleLocations.size(); i++) {
 			Location nextLocation = explore.nearestNeighbour();
-			System.out.println(nextLocation);
-			List<Character> robotPath = explore.printPath(nextLocation);
+
+			//path.add('f');
+			//System.out.println(nextLocation);
+			path.add(explore.printPath(nextLocation));
 			
-			nextLocation.print();
-			for (char direction : robotPath) {
-				System.out.println("Test");
+			
+			//pathAnimator(path);
+		}
+//		for (List<Character> i : path) {
+//			for (char j : i) {
+//				System.out.print(j);
+//			}
+//			System.out.println();
+//		}
+		t = new Timer(500, new MoveListener());
+	}
+	
+	private class MoveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (path.isEmpty()) {
+				t.stop();
+				return;
+			}
+			if (path.get(0).isEmpty()) {
+				path.remove(0);
+			}
+			char i = path.get(0).get(0);
+			path.get(0).remove(0);
+			System.out.println(i);
+			System.out.println("Test");
+			if (i == 'f') {				
+				robot.moveForward();
+			}
+			else if (i == 'r') {
+				robot.turnRight();
+			}
+			else if (i == 'l') {
+				robot.turnLeft();
+			} 
+			
+			
+			repaint();
+		}
+	}
+	
+	private void pathAnimator(List<Character> path) {
+		
+		for (char i : path) {
+			//System.out.print(i);
+			if (i == 'f') {
+				//System.out.println("Robot Coordinates: (" + robot.getCurrentGridCell().getLocation().getX() + ","+ robot.getCurrentGridCell().getLocation().getY()+ ")");
+				robot.moveForward();
+				//System.out.println("Robot Coordinates: (" + robot.getCurrentGridCell().getLocation().getX() + ","+ robot.getCurrentGridCell().getLocation().getY()+ ")");
+			}
+			else if (i == 'r') {
+				robot.turnRight();
+			}
+			else if (i == 'l') {
+				robot.turnLeft();
+			}
+			else {
+				
+			}
+
+			repaint();
+			try {
+				TimeUnit.SECONDS.sleep(5);
+			} catch (InterruptedException e) {
+				System.out.println(e);
 			}
 		}
 	}
@@ -78,6 +151,7 @@ public class MainView extends JPanel {
 		obstacleLocations.add(new Location(7,1,'S'));
 		obstacleLocations.add(new Location(12,15,'E'));
 		obstacleLocations.add(new Location(5,8,'W'));
+		obstacleLocations.add(new Location(15,7,'N'));
 	}
 	
 	private void calculateDimensions() {
@@ -106,8 +180,11 @@ public class MainView extends JPanel {
 	}
 	
 	public void paint(Graphics g) {
+		super.paintComponent(g);
+		
 		paintGridCells(g);
 		paintRobot(g);
+		t.start();
 	}
 	
 	private void paintRobot(Graphics g) {
