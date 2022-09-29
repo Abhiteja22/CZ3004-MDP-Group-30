@@ -112,7 +112,7 @@ public class Location {
 //		Location backLocation = new Location();
 		if (n.direction == 'N') {
 			Location frontLocation = new Location(n.getX(),n.getY()-1, 'N', 'f');
-			Location frontLocation1 = new Location(n.getX()+1,n.getY()-1, 'N', 'f');
+			Location frontLocation1 = new Location(n.getX()+1,n.getY()-1);
 			Location frontLocation2 = new Location(n.getX()+2,n.getY()-1, 'N', 'f');
 			Location backLocation = new Location(n.getX(),n.getY()+1, 'N', 'b');
 			Location leftLocation = new Location(n.getX(),n.getY()+2, 'W', 'l');			
@@ -130,7 +130,7 @@ public class Location {
 			}
 			if (!(n.getY() >= 17)) { // At bottom, cannot go backward
 				if (backLocation.checkLocation(loc)) {
-					backLocation.g = 10;
+					backLocation.g = 5;
 					backLocation.distance = 1;
 					locationList.add(backLocation);
 				}
@@ -162,7 +162,7 @@ public class Location {
 			}
 			if (!(n.getX() <= 2)) { // At Left side, cannot go backward
 				if (backLocation.checkLocation(loc)) {
-					backLocation.g = 10;
+					backLocation.g = 5;
 					backLocation.distance = 1;
 					locationList.add(backLocation);
 				}
@@ -203,7 +203,7 @@ public class Location {
 			}
 			if (!(n.getX() >= 17)) { // At Right side, cannot go backward
 				if (backLocation.checkLocation(loc)) {
-					backLocation.g = 10;
+					backLocation.g = 5;
 					backLocation.distance = 1;
 					locationList.add(backLocation);
 				}
@@ -245,7 +245,7 @@ public class Location {
 			}
 			if (!(n.getY() <= 2)) { // At top, cannot go backward
 				if (backLocation.checkLocation(loc)) {
-					backLocation.g = 10;
+					backLocation.g = 5;
 					backLocation.distance = 1;
 					locationList.add(backLocation);
 				}

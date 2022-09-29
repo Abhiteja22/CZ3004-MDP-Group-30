@@ -70,15 +70,23 @@ public class Explore {
 	    }
 	    //ids.add(n);
 	    Collections.reverse(ids);
-
-	    for(Location id : ids){
-	        System.out.print(id.getMovement()+ " ");
-
-	        robotPath.add(id.getMovement());
-	        System.out.println(id.getX() + " " + id.getY() + " " + id.getDirection()+ " ");
-	    }
-	    System.out.println("");
 	    
+//	    for(Location id : ids){
+//	        System.out.print(id.getMovement()+ " ");
+//
+//	        robotPath.add(id.getMovement());
+//	        //System.out.println(id.getX() + " " + id.getY() + " " + id.getDirection()+ " ");
+//	    }
+	    for (int i = 1; i < ids.size(); i++) {
+	    	//System.out.print(ids.get(i).getMovement()+ " ");
+
+	        robotPath.add(ids.get(i).getMovement());
+	    	
+	    }
+	    robotPath.add('s');
+	    robotPath.add('c');
+	    System.out.println("");
+	    //System.out.println(robotPath);
 	    return robotPath;
 	}
 	
@@ -121,9 +129,9 @@ public class Explore {
 				returned_location = target;
 			}
 		}
-		//this.printPath(returned_location);
+		this.printPath(returned_location);
 		//System.out.println(returned_location);
-
+		System.out.println(min_cost);
 		this.startingLocation = next_location;
 		this.Visited.add(next_location);
 		this.openList.clear();
