@@ -23,7 +23,7 @@ public class Explore {
 	    while(!openList.isEmpty()){
 	    	
 	        Location n = openList.remove();
-	        System.out.println(n);
+//	        System.out.println(n);
 	        if(n.isSameGoalLocation(target)){
 	            return n;
 	        }
@@ -119,7 +119,7 @@ public class Explore {
 			if (Visited.contains(obstacleLocation)) {
 				continue;
 			}
-
+			obstacleLocation.print();
 			Location target = this.aStar(startingLocation,  obstacleLocation);
 
 			double cost = this.getPathCost(target);
@@ -164,16 +164,16 @@ public class Explore {
 			// For Blocked Locations
 			blockedLocations.add(new Location(x,y));
 //
-//			blockedLocations.add(new Location(x-1,y-1));
-//			blockedLocations.add(new Location(x,y-1));
-//			blockedLocations.add(new Location(x+1,y-1));
-//			blockedLocations.add(new Location(x-1,y));
-//			blockedLocations.add(new Location(x+1,y));
-//			blockedLocations.add(new Location(x-1,y+1));
-//			blockedLocations.add(new Location(x,y+1));
-//			blockedLocations.add(new Location(x+1,y+1));
+			blockedLocations.add(new Location(x-1,y-1));
+			blockedLocations.add(new Location(x,y-1));
+			blockedLocations.add(new Location(x+1,y-1));
+			blockedLocations.add(new Location(x-1,y));
+			blockedLocations.add(new Location(x+1,y));
+			blockedLocations.add(new Location(x-1,y+1));
+			blockedLocations.add(new Location(x,y+1));
+			blockedLocations.add(new Location(x+1,y+1));
 		}
-		startingLocation = new Location(0,17, 'N');
+		startingLocation = new Location(0,18, 'N');
 		
 	}
 	

@@ -99,7 +99,7 @@ public class MainView extends JPanel {
 ////					returned_obstacle += String.valueOf(nextLocation.getX());
 ////					returned_obstacle += "*";
 ////					returned_obstacle += String.valueOf(nextLocation.getY());
-////					returned_obstacle += "*";
+////					returned_obstacle += "*"; ca
 ////					//pathAnimator(path);
 ////				}
 //
@@ -268,10 +268,10 @@ public class MainView extends JPanel {
 //		obstacleLocations.add(obstacleLocation);
 		obstacleLocations.add(new Location(1,1,'S'));
 		obstacleLocations.add(new Location(6,7,'N'));
-		//obstacleLocations.add(new Location(10,12,'E'));
+		obstacleLocations.add(new Location(10,12,'E'));
 		obstacleLocations.add(new Location(13,17,'E'));
 		obstacleLocations.add(new Location(19,10,'W'));
-		//obstacleLocations.add(new Location(15,3,'W'));
+		obstacleLocations.add(new Location(15,3,'W'));
 	}
 	
 	private void calculateDimensions() {

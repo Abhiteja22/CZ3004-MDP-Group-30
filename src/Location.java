@@ -67,7 +67,7 @@ public class Location {
 		return otherLocation.getX() == x && otherLocation.getY() == y;
 	}
 	
-	public boolean checkLocation(List<Location> loc) { // returns false if location is inside loc
+	public boolean checkLocation(List<Location> loc) { // returns false if location is inside loc		
 		for (Location a : loc) {
 			if (this.isSameLocation(a)) {
 				return false;
@@ -108,6 +108,7 @@ public class Location {
 		ArrayList<Location> locationList = new ArrayList<>();
 		boolean addRight = true;
 		boolean addLeft = true;
+		boolean addBack = true;
 		Location frontLocation = new Location();
 		Location frontLocation1 = new Location();
 		Location frontLocation2 = new Location();
@@ -131,19 +132,14 @@ public class Location {
 
 
 			//For Invalid Locations
-			if (n.getY() != 0) { // At top, cannot go forward
-				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) && frontLocation2.checkLocation(loc)) {
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) ) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
 				}
-			}
-			if (!(n.getY() >= 17)) { // At bottom, cannot go backward
-				if (backLocation.checkLocation(loc)) {
-					backLocation.g = 5;
-					backLocation.distance = 1;
-					locationList.add(backLocation);
+				if (!backLocation.checkLocation(loc)) {
+					addBack = true;
+	
 				}
-			}
 			for (int i=1; i<=3; i++) {
 				for (int j=-3;j<=2;j++) {
 					Location check_right_location = new Location(x+j,y-i);
@@ -175,29 +171,13 @@ public class Location {
 			leftLocation = new Location(n.getX()+1,n.getY()-3, 'N', 'l');
 			//Location rightLocation = new Location(n.getX(),n.getY()+2, 'S', 'r');
 			rightLocation = new Location(n.getX()+3,n.getY()+5, 'S', 'r');
-//			locationList.add(frontLocation);
-//			locationList.add(backLocation);
-//			backLocation.g = 5;
-//			leftLocation.g = 5;
-//			locationList.add(leftLocation);
-//			rightLocation.g = 5;
-//			locationList.add(rightLocation);
-//			frontLocation.distance = 1;
-//			backLocation.distance = 1;
-			// For Invalid Locations
-			if (n.getX() != 19) { // At right side, cannot go forward
-				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) && frontLocation2.checkLocation(loc)) {
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) ) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
 				}
-			}
-			if (!(n.getX() <= 2)) { // At Left side, cannot go backward
-				if (backLocation.checkLocation(loc)) {
-					backLocation.g = 5;
-					backLocation.distance = 1;
-					locationList.add(backLocation);
+				if (!backLocation.checkLocation(loc)) {
+					addBack = false;
 				}
-			}
 
 			for (int i=1; i<=3; i++) {
 				for (int j=-3;j<=2;j++) {
@@ -232,16 +212,31 @@ public class Location {
 //			Location rightLocation = new Location(n.getX(),n.getY()-2, 'N', 'r');
 			rightLocation = new Location(n.getX()-3,n.getY()-5, 'N', 'r');
 			// For Invalid Locations
-			if (n.getX() != 0) { // At Left side, cannot go forward
-				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) && frontLocation2.checkLocation(loc)) {
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) ) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
 				}
-			}
-				if (backLocation.checkLocation(loc)) {
-					backLocation.g = 5;
-					backLocation.distance = 1;
-					locationList.add(backLocation);
+				if (!backLocation.checkLocation(loc)) {
+					addBack = false;
+				}
+				for (int i=1; i<=3; i++) {
+					for (int j=-3;j<=2;j++) {
+						Location check_right_location = new Location(x-i,y-j);
+						if (!check_right_location.checkLocation(loc)) {
+							addLeft = false;
+						}
+
+					}
+				}
+
+				for (int i=1; i<=3; i++) {
+					for (int j=0;j<=5;j++) {
+						Location check_right_location = new Location(x-i,y-j);
+						if (!check_right_location.checkLocation(loc)) {
+							addRight = false;
+						}
+
+					}
 				}
 		}
 		else {
@@ -256,19 +251,15 @@ public class Location {
 
 			// For Invalid Locations
 			// At bottom, cannot go forward
-			if (n.getY() != 19) {
-				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) && frontLocation2.checkLocation(loc)) {
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) ) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
 				}
-			}
-			if (!(n.getY() <= 2)) { // At top, cannot go backward
-				if (backLocation.checkLocation(loc)) {
-					backLocation.g = 5;
-					backLocation.distance = 1;
-					locationList.add(backLocation);
+
+				if (!backLocation.checkLocation(loc)) {
+					addBack = false;
 				}
-			}
+			
 			for (int i=1; i<=3; i++) {
 				for (int j=-3;j<=2;j++) {
 					Location check_right_location = new Location(x-j,y+i);
@@ -288,14 +279,21 @@ public class Location {
 
 				}
 			}
+		}
 		if (addLeft) {
-			leftLocation.g = 6;
+			leftLocation.g = 5;
+			leftLocation.distance = 6;
 			locationList.add(leftLocation);
 		}
 		if (addRight) {
-			rightLocation.g = 6;
+			rightLocation.g = 5;
+			rightLocation.distance = 6;
 			locationList.add(rightLocation);
 		}
+		if (addBack) {
+			backLocation.g = 5;
+			backLocation.distance = 1;
+			locationList.add(backLocation);
 		}
 		return locationList;
 		
