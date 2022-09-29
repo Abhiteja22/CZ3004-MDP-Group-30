@@ -277,10 +277,7 @@ public class Location {
 					
 				}
 			}
-			if (addRight) {
-				rightLocation.g = 5;
-				locationList.add(rightLocation);
-			}
+	
 	
 		}
 		else {
@@ -342,10 +339,8 @@ public class Location {
 				rightLocation.g = 5;
 				locationList.add(rightLocation);
 			}
-
-			
 		}
-		
+
 		return locationList;
 	}
 

@@ -19,10 +19,11 @@ public class Explore {
 	    
 	    start.f = start.g + start.calculateHeuristic(start, target);
 	    this.openList.add(start);
+	    
 	    while(!openList.isEmpty()){
 	    	
 	        Location n = openList.remove();
-	        //System.out.println(n.getX());
+	        System.out.println(n);
 	        if(n.isSameGoalLocation(target)){
 	            return n;
 	        }
@@ -130,7 +131,7 @@ public class Explore {
 			}
 		}
 		//this.printPath(returned_location);
-		//System.out.println(returned_location);
+		System.out.println("Cost: ");
 		System.out.println(min_cost);
 		this.startingLocation = next_location;
 		this.Visited.add(next_location);
@@ -161,15 +162,16 @@ public class Explore {
 			}
 			
 			// For Blocked Locations
-			blockedLocations.add(new Location(x-1,y-1));
-			blockedLocations.add(new Location(x,y-1));
-			blockedLocations.add(new Location(x+1,y-1));
-			blockedLocations.add(new Location(x-1,y));
 			blockedLocations.add(new Location(x,y));
-			blockedLocations.add(new Location(x+1,y));
-			blockedLocations.add(new Location(x-1,y+1));
-			blockedLocations.add(new Location(x,y+1));
-			blockedLocations.add(new Location(x+1,y+1));
+//
+//			blockedLocations.add(new Location(x-1,y-1));
+//			blockedLocations.add(new Location(x,y-1));
+//			blockedLocations.add(new Location(x+1,y-1));
+//			blockedLocations.add(new Location(x-1,y));
+//			blockedLocations.add(new Location(x+1,y));
+//			blockedLocations.add(new Location(x-1,y+1));
+//			blockedLocations.add(new Location(x,y+1));
+//			blockedLocations.add(new Location(x+1,y+1));
 		}
 		startingLocation = new Location(0,17, 'N');
 		

@@ -53,88 +53,112 @@ public class MainView extends JPanel {
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		calculateDimensions();
 		//generateRandomObstacels(5);
-//		setObstacles();
-//		robot.moveForward();
-//		robot.moveForward();
-//		robot.moveForward();
-//		robot.turnRight();
-//		populateGridCells();
-//		System.out.println("Finished Populating Grid Cells.");
-//		populateGridCells();
-//		Explore explore = new Explore(obstacleLocations);
-//		for (int i=0; i<obstacleLocations.size(); i++) {
-//			Location nextLocation = explore.nearestNeighbour();
+		setObstacles();
+		populateGridCells();
+		System.out.println("Finished Populating Grid Cells.");
+		populateGridCells();
+		Explore explore = new Explore(obstacleLocations);
+		for (int i=0; i<obstacleLocations.size(); i++) {
+			Location nextLocation = explore.nearestNeighbour();
+			path.add(explore.printPath(nextLocation));
+			
+			
+			//pathAnimator(path);
+		}
+//		try{ 
+//		      try (ServerSocket serverSocket = new ServerSocket(12345)) {
+//		    	  
+//		        Socket soc = serverSocket.accept();
+//		          System.out.println("Receive new connection: " + soc.getInetAddress());
+//		          DataOutputStream dout=new DataOutputStream(soc.getOutputStream());  
+//		          DataInputStream in = new DataInputStream(soc.getInputStream());
+//		          
+//		          String msg=(String)in.readUTF();
+//		          System.out.println("Client message: "+msg);
+//		          String[] obstacle_split = msg.split(",");
+//		          System.out.println(obstacle_split[0].split("'")[1]);
+//	        	  System.out.println(obstacle_split[1].split("'")[1]);
+//	        	  System.out.println(obstacle_split[2].split("'")[1]);
+//		          int numberOfObstacle = Integer.parseInt(obstacle_split[0].split("'")[1]);
+//		          for (int i = 0; i < numberOfObstacle; i++) {
+//		        	  int x = Integer.parseInt(obstacle_split[3*i+1].split("'")[1]);
+//		        	  int y = Integer.parseInt(obstacle_split[3*i+2].split("'")[1]);
+//		        	  char direction = obstacle_split[3*i+3].split("'")[1].charAt(0);
+//		        	  obstacleLocations.add(new Location(x,y,direction));
+//		          }
+//		      	populateGridCells();
+//				System.out.println("Finished Populating Grid Cells.");
+//				Explore explore = new Explore(obstacleLocations);
+////				String returned_obstacle = "";
+////				for (int i=0; i<obstacleLocations.size(); i++) {
+////					Location nextLocation = explore.nearestNeighbour();
+////
+////					//path.add('f');
+////					System.out.println(nextLocation);
+////					path.add(explore.printPath(nextLocation));
+////					returned_obstacle += String.valueOf(nextLocation.getX());
+////					returned_obstacle += "*";
+////					returned_obstacle += String.valueOf(nextLocation.getY());
+////					returned_obstacle += "*";
+////					//pathAnimator(path);
+////				}
 //
-//			//path.add('f');
-//			//System.out.println(nextLocation);
-//			path.add(explore.printPath(nextLocation));
-//			
-//			
-//			//pathAnimator(path);
-//		}
-		try{ 
-		      try (ServerSocket serverSocket = new ServerSocket(12345)) {
-		    	  
-		        Socket soc = serverSocket.accept();
-		          System.out.println("Receive new connection: " + soc.getInetAddress());
-		          DataOutputStream dout=new DataOutputStream(soc.getOutputStream());  
-		          DataInputStream in = new DataInputStream(soc.getInputStream());
-		          
-		          String msg=(String)in.readUTF();
-		          System.out.println("Client message: "+msg);
-		          String[] obstacle_split = msg.split(",");
-		          System.out.println(obstacle_split[0].split("'")[1]);
-	        	  System.out.println(obstacle_split[1].split("'")[1]);
-	        	  System.out.println(obstacle_split[2].split("'")[1]);
-		          int numberOfObstacle = Integer.parseInt(obstacle_split[0].split("'")[1]);
-		          for (int i = 0; i < numberOfObstacle; i++) {
-		        	  int x = Integer.parseInt(obstacle_split[3*i+1].split("'")[1]);
-		        	  int y = Integer.parseInt(obstacle_split[3*i+2].split("'")[1]);
-		        	  char direction = obstacle_split[3*i+3].split("'")[1].charAt(0);
-		        	  obstacleLocations.add(new Location(x,y,direction));
-		          }
-		      	populateGridCells();
-				System.out.println("Finished Populating Grid Cells.");
-				Explore explore = new Explore(obstacleLocations);
-				String returned_obstacle = "";
-				for (int i=0; i<obstacleLocations.size(); i++) {
-					Location nextLocation = explore.nearestNeighbour();
-
-					//path.add('f');
-					System.out.println(nextLocation);
-					path.add(explore.printPath(nextLocation));
-					returned_obstacle += String.valueOf(nextLocation.getX());
-					returned_obstacle += "*";
-					returned_obstacle += String.valueOf(nextLocation.getY());
-					returned_obstacle += "*";
-					//pathAnimator(path);
-				}
-
-		  		String returned_str = "";
-		  		for (int i=0; i<obstacleLocations.size(); i++) {
-			  		for (Character item : path.get(i)) {
-			  			returned_str += Character.toString(item);
-			  			returned_str += ",";
-			  		}
-		  		}
-		  		returned_str += ".";
-				returned_obstacle += ".";
-		          //dout.writeUTF(Arrays.toString(path.get(0).toArray())); //insert the directions from algo 
-		  		System.out.println(returned_str);
-		  		dout.writeUTF(returned_str);
-				dout.writeUTF(returned_obstacle);
-		          dout.flush();
-		          dout.close();
-		          soc.close();
-		      }
-		     }
-		catch(Exception e)
-		  {
-		      e.printStackTrace();
-//		      dout.flush();
-//	          dout.close();
-//	          soc.close(); 
-		  }
+//		  		String returned_str = "";
+//	
+//				for (int i=0; i<obstacleLocations.size(); i++) {
+//					Location nextLocation = explore.nearestNeighbour();
+//					System.out.println(nextLocation.getDirection());
+//					path.add(explore.printPath(nextLocation));
+//					char direction = nextLocation.getDirection();
+//					if (direction == 'N') {
+//						returned_str += String.valueOf(nextLocation.getX()+1);
+//						returned_str += ",";
+//						returned_str += String.valueOf(nextLocation.getY()-2);
+//					} else if (direction == 'E') {
+//						returned_str += String.valueOf(nextLocation.getX()+2);
+//						returned_str += ",";
+//						returned_str += String.valueOf(nextLocation.getY()+1);
+//					} else if (direction == 'W') {
+//						returned_str += String.valueOf(nextLocation.getX()-2);
+//						returned_str += ",";
+//						returned_str += String.valueOf(nextLocation.getY()-1);
+//					} else if (direction == 'S') {
+//						returned_str += String.valueOf(nextLocation.getX()-1);
+//						returned_str += ",";
+//						returned_str += String.valueOf(nextLocation.getY()+2);
+//					}							
+//					
+//					if (i != obstacleLocations.size()-1) {
+//						returned_str += ",";
+//					}
+//					//pathAnimator(path);
+//				}
+//		  		returned_str += "*";
+//
+//		  		for (int i=0; i<obstacleLocations.size(); i++) {
+//			  		for (Character item : path.get(i)) {
+//			  			returned_str += Character.toString(item);
+//			  			returned_str += ",";
+//			  		}
+//		  		}
+//				returned_str += ".";
+//		          //dout.writeUTF(Arrays.toString(path.get(0).toArray())); //insert the directions from algo 
+//		  		System.out.println(returned_str);
+////		  		System.out.println(returned_obstacle);
+//		  		dout.writeUTF(returned_str);
+////				dout.writeUTF(returned_obstacle);
+//		          dout.flush();
+//		          dout.close();
+//		          soc.close();
+//		      }
+//		     }
+//		catch(Exception e)
+//		  {
+//		      e.printStackTrace();
+////		      dout.flush();
+////	          dout.close();
+////	          soc.close(); 
+//		  }
 		
 		
 		//System.out.println(Arrays.toString(path.get(0).toArray()));
@@ -242,12 +266,12 @@ public class MainView extends JPanel {
 	private void setObstacles() {
 //		Location obstacleLocation = new Location(x,y);
 //		obstacleLocations.add(obstacleLocation);
-		obstacleLocations.add(new Location(7,4,'S'));
-		obstacleLocations.add(new Location(10,10,'E'));
-//		obstacleLocations.add(new Location(7,1,'S'));
-//		obstacleLocations.add(new Location(12,15,'E'));
-//		obstacleLocations.add(new Location(5,8,'W'));
-//		obstacleLocations.add(new Location(15,7,'N'));
+		obstacleLocations.add(new Location(1,1,'S'));
+		obstacleLocations.add(new Location(6,7,'N'));
+		//obstacleLocations.add(new Location(10,12,'E'));
+		obstacleLocations.add(new Location(13,17,'E'));
+		obstacleLocations.add(new Location(19,10,'W'));
+		//obstacleLocations.add(new Location(15,3,'W'));
 	}
 	
 	private void calculateDimensions() {
