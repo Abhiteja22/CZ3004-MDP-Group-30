@@ -69,6 +69,23 @@ public class Robot {
 		this.setCurrentGridCell(newLocation, false);
 	}
 	
+	public void moveBackward() { //Adjust it such that it cannot move forward when facing edges
+		Location currentLocation = this.getCurrentGridCell().getLocation();
+		
+		Location newLocation = new Location();
+		if (this.orientation == 'N') {
+			newLocation = new Location(currentLocation.getX(), currentLocation.getY()+1);
+		} else if (this.orientation == 'E') {
+			newLocation = new Location(currentLocation.getX()-1, currentLocation.getY());
+		} else if (this.orientation == 'W') {
+			newLocation = new Location(currentLocation.getX()+1, currentLocation.getY());
+		} else {
+			newLocation = new Location(currentLocation.getX(), currentLocation.getY()-1);
+		}
+		
+		this.setCurrentGridCell(newLocation, false);
+	}
+	
 	public void turnRight() {
 		if (this.orientation == 'N') {
 			this.setOrientation('E');
