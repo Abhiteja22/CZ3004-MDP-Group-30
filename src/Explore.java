@@ -1,4 +1,4 @@
-//package mdp_git_latest;
+package mdp_git;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,18 +19,18 @@ public class Explore {
 	    
 	    start.f = start.g + start.calculateHeuristic(start, target);
 	    this.openList.add(start);
-	    
 	    while(!openList.isEmpty()){
 	    	
 	        Location n = openList.remove();
-//	        System.out.println(n);
+	        //System.out.println(n.getX());
 	        if(n.isSameGoalLocation(target)){
 	            return n;
 	        }
-
+	        
 	        for(Location  edge : n.getNeighbors(n, blockedLocations)){
 	            Location m = edge;
 	            double totalWeight = n.g + m.g;
+	            //System.out.println("Checking: (" + n.getX() + ", " + n.getY() + ")");
 
 	            if(!openList.contains(m) && !closedList.contains(m)){
 	                m.parent = n;
@@ -92,6 +92,7 @@ public class Explore {
 	}
 	
 	public double getPathCost(Location target) {
+		
 		Location n = target;
 		//double cost = n.f;
 		double cost = 0;
@@ -119,11 +120,12 @@ public class Explore {
 			if (Visited.contains(obstacleLocation)) {
 				continue;
 			}
-			obstacleLocation.print();
+			
+			System.out.println("Checking Goal Location: (" + obstacleLocation.getX() + ", " + obstacleLocation.getY() + ")");
 			Location target = this.aStar(startingLocation,  obstacleLocation);
 
 			double cost = this.getPathCost(target);
-			//System.out.println(cost);
+			System.out.println("Cost: " + cost);
 			if (cost < min_cost) {
 				min_cost = cost;
 				next_location = obstacleLocation;
@@ -131,7 +133,7 @@ public class Explore {
 			}
 		}
 		//this.printPath(returned_location);
-		System.out.println("Cost: ");
+		//System.out.println(returned_location);
 		System.out.println(min_cost);
 		this.startingLocation = next_location;
 		this.Visited.add(next_location);
@@ -163,17 +165,17 @@ public class Explore {
 			
 			// For Blocked Locations
 			blockedLocations.add(new Location(x,y));
-//
-			blockedLocations.add(new Location(x-1,y-1));
-			blockedLocations.add(new Location(x,y-1));
-			blockedLocations.add(new Location(x+1,y-1));
-			blockedLocations.add(new Location(x-1,y));
-			blockedLocations.add(new Location(x+1,y));
-			blockedLocations.add(new Location(x-1,y+1));
-			blockedLocations.add(new Location(x,y+1));
-			blockedLocations.add(new Location(x+1,y+1));
+//			blockedLocations.add(new Location(x-1,y-1));
+//			blockedLocations.add(new Location(x,y-1));
+//			blockedLocations.add(new Location(x+1,y-1));
+//			blockedLocations.add(new Location(x-1,y));
+//			
+//			blockedLocations.add(new Location(x+1,y));
+//			blockedLocations.add(new Location(x-1,y+1));
+//			blockedLocations.add(new Location(x,y+1));
+//			blockedLocations.add(new Location(x+1,y+1));
 		}
-		startingLocation = new Location(0,18, 'N');
+		startingLocation = new Location(0,17, 'N');
 		
 	}
 	

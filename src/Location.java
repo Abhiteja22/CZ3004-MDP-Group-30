@@ -1,18 +1,8 @@
-//package mdp_git_latest;
+package mdp_git;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//package mdp_test_own;
-
-/*
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor*/
 public class Location {
 	private int x;
 	private int y;
@@ -60,14 +50,13 @@ public class Location {
 		this.y = b;
 		this.direction = c;
 		this.movement = d;
-		// TODO Auto-generated constructor stub
 	}
 
 	public boolean isSameLocation(Location otherLocation) {
 		return otherLocation.getX() == x && otherLocation.getY() == y;
 	}
 	
-	public boolean checkLocation(List<Location> loc) { // returns false if location is inside loc		
+	public boolean checkLocation(List<Location> loc) { // returns false if location is inside loc
 		for (Location a : loc) {
 			if (this.isSameLocation(a)) {
 				return false;
@@ -103,12 +92,9 @@ public class Location {
 	}
 
 	public List<Location> getNeighbors(Location n, List<Location> loc) {
-		// TODO Auto-generated method stub
-		//Find north location
 		ArrayList<Location> locationList = new ArrayList<>();
 		boolean addRight = true;
 		boolean addLeft = true;
-		boolean addBack = true;
 		Location frontLocation = new Location();
 		Location frontLocation1 = new Location();
 		Location frontLocation2 = new Location();
@@ -117,6 +103,7 @@ public class Location {
 		Location backLocation = new Location();
 		Location backLocation1 = new Location();
 		Location backLocation2 = new Location();
+		Location backLocation3 = new Location();
 		int x = n.getX();
 		int y = n.getY();
 
@@ -125,148 +112,202 @@ public class Location {
 			frontLocation1 = new Location(n.getX()+1,n.getY()-1);
 			frontLocation2 = new Location(n.getX()+2,n.getY()-1, 'N', 'f');
 			backLocation = new Location(n.getX(),n.getY()+1, 'N', 'b');
+			backLocation1 = new Location(n.getX(),n.getY()+3, 'N', 'b');
+			backLocation2 = new Location(n.getX()+1,n.getY()+3, 'N', 'b');
+			backLocation3 = new Location(n.getX()+2,n.getY()+3, 'N', 'b');
 //			Location leftLocation = new Location(n.getX(),n.getY()+2, 'W', 'l');
-			leftLocation = new Location(n.getX()-3,n.getY()-1, 'W', 'l');
+			leftLocation = new Location(n.getX()-4,n.getY()-2, 'W', 'l');
 			//Location rightLocation = new Location(n.getX()+2,n.getY(), 'E', 'r');
 			rightLocation = new Location(n.getX()+5,n.getY()-3, 'E', 'r');
 
 
 			//For Invalid Locations
-				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) ) {
+			if (!(n.getY() <= 0)) { // At top, cannot go forward
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc)) { //&& frontLocation2.checkLocation(loc)) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
 				}
-				if (!backLocation.checkLocation(loc)) {
-					addBack = true;
-	
+			}
+			if (!(n.getY() >= 20)) { // At bottom, cannot go backward
+				if (backLocation1.checkLocation(loc) && backLocation2.checkLocation(loc)) {
+					backLocation.g = 5;
+					backLocation.distance = 1;
+					locationList.add(backLocation);
 				}
+			}
 			for (int i=1; i<=3; i++) {
 				for (int j=-3;j<=2;j++) {
 					Location check_right_location = new Location(x+j,y-i);
 					if (!check_right_location.checkLocation(loc)) {
 						addLeft = false;
 					}
-
+					
 				}
 			}
-
+			
 			for (int i=1; i<=3; i++) {
 				for (int j=0;j<=5;j++) {
 					Location check_right_location = new Location(x+j,y-i);
 					if (!check_right_location.checkLocation(loc)) {
 						addRight = false;
 					}
-
+					
 				}
 			}
-
-
+			
+	
 		}
 		else if (n.direction == 'E') {
 			frontLocation = new Location(n.getX()+1,n.getY(), 'E', 'f');
 			frontLocation1 = new Location(n.getX()+1,n.getY()+1, 'N', 'f');
 			frontLocation2 = new Location(n.getX()+1,n.getY()+2, 'N', 'f');
 			backLocation = new Location(n.getX()-1,n.getY(), 'E', 'b');
+			backLocation1 = new Location(n.getX()-3,n.getY(), 'N', 'b');
+			backLocation2 = new Location(n.getX()-3,n.getY()+1, 'N', 'b');
+			backLocation3 = new Location(n.getX()-3,n.getY()+2, 'N', 'b');
 //			Location leftLocation = new Location(n.getX()-2,n.getY(), 'N', 'l');
-			leftLocation = new Location(n.getX()+1,n.getY()-3, 'N', 'l');
-			//Location rightLocation = new Location(n.getX(),n.getY()+2, 'S', 'r');
+			leftLocation = new Location(n.getX()+2,n.getY()-4, 'N', 'l');
+			//Location rightLocation = new Location(n.getX(),n.getY()+2, 'S', 'r');	
 			rightLocation = new Location(n.getX()+3,n.getY()+5, 'S', 'r');
-				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) ) {
+//			locationList.add(frontLocation);
+//			locationList.add(backLocation);
+//			backLocation.g = 5;
+//			leftLocation.g = 5;
+//			locationList.add(leftLocation);
+//			rightLocation.g = 5;
+//			locationList.add(rightLocation);
+//			frontLocation.distance = 1;
+//			backLocation.distance = 1;
+			// For Invalid Locations
+			if (!(n.getX() >= 19)) { // At right side, cannot go forward
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc)) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
 				}
-				if (!backLocation.checkLocation(loc)) {
-					addBack = false;
+			}
+			if (!(n.getX() <= -1)) { // At Left side, cannot go backward
+				if (backLocation1.checkLocation(loc) && backLocation2.checkLocation(loc)) {
+					backLocation.g = 5;
+					backLocation.distance = 1;
+					locationList.add(backLocation);
 				}
-
+			}
+			
 			for (int i=1; i<=3; i++) {
 				for (int j=-3;j<=2;j++) {
 					Location check_right_location = new Location(x+i,y+j);
 					if (!check_right_location.checkLocation(loc)) {
 						addLeft = false;
 					}
-
+					
 				}
 			}
-
-
+			
+			
 			for (int i=1; i<=3; i++) {
 				for (int j=0;j<=5;j++) {
 					Location check_right_location = new Location(x+i,y+j);
 					if (!check_right_location.checkLocation(loc)) {
 						addRight = false;
 					}
-
+					
 				}
 			}
-
-
+			
+			
 		}
 		else if (n.direction == 'W') {
 			frontLocation = new Location(n.getX() - 1,n.getY(), 'W', 'f');
 			frontLocation1 = new Location(n.getX()-1,n.getY()-1, 'N', 'f');
 			frontLocation2 = new Location(n.getX()-1,n.getY()-2, 'N', 'f');
 			backLocation = new Location(n.getX()+1,n.getY(), 'W', 'b');
+			backLocation1 = new Location(n.getX()+3,n.getY(), 'N', 'b');
+			backLocation2 = new Location(n.getX()+3,n.getY()+1, 'N', 'b');
+			backLocation3 = new Location(n.getX()+3,n.getY()+2, 'N', 'b');
 //			Location leftLocation = new Location(n.getX()+2,n.getY(), 'S', 'l');
-			leftLocation = new Location(n.getX()-1,n.getY()+3, 'S', 'l');
+			leftLocation = new Location(n.getX()-2,n.getY()+4, 'S', 'l');
 //			Location rightLocation = new Location(n.getX(),n.getY()-2, 'N', 'r');
-			rightLocation = new Location(n.getX()-3,n.getY()-5, 'N', 'r');
+			rightLocation = new Location(n.getX()-3,n.getY()-5, 'N', 'r');	
 			// For Invalid Locations
-				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) ) {
-					frontLocation.distance = 1;
-					locationList.add(frontLocation);
+			if (!(n.getX() <= 0)) { // At Left side, cannot go forward
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc)) {
+					frontLocation.distance = 1;					
+					locationList.add(frontLocation);					
 				}
-				if (!backLocation.checkLocation(loc)) {
-					addBack = false;
+			}
+			if (!(n.getX() >= 20)) { // At Right side, cannot go backward
+				if (backLocation1.checkLocation(loc) && backLocation2.checkLocation(loc)) {
+					backLocation.g = 5;
+					backLocation.distance = 1;
+					locationList.add(backLocation);
 				}
-				for (int i=1; i<=3; i++) {
-					for (int j=-3;j<=2;j++) {
-						Location check_right_location = new Location(x-i,y-j);
-						if (!check_right_location.checkLocation(loc)) {
-							addLeft = false;
-						}
-
+			
+			}
+			for (int i=1; i<=3; i++) {
+				for (int j=-3;j<=2;j++) {
+					Location check_right_location = new Location(x-i,y-j);
+					if (!check_right_location.checkLocation(loc)) {
+						addLeft = false;
 					}
+					
 				}
-
-				for (int i=1; i<=3; i++) {
-					for (int j=0;j<=5;j++) {
-						Location check_right_location = new Location(x-i,y-j);
-						if (!check_right_location.checkLocation(loc)) {
-							addRight = false;
-						}
-
+			}
+			
+			for (int i=1; i<=3; i++) {
+				for (int j=0;j<=5;j++) {
+					Location check_right_location = new Location(x-i,y-j);
+					if (!check_right_location.checkLocation(loc)) {
+						addRight = false;
 					}
+					
 				}
+			}
+			
+	
 		}
 		else {
 			frontLocation = new Location(n.getX(),n.getY()+1, 'S', 'f');
 			frontLocation1 = new Location(n.getX()-1,n.getY()+1, 'N', 'f');
 			frontLocation2 = new Location(n.getX()-2,n.getY()+1, 'N', 'f');
 			backLocation = new Location(n.getX(),n.getY()-1, 'S', 'b');
+			backLocation1 = new Location(n.getX(),n.getY()-3, 'N', 'b');
+			backLocation2 = new Location(n.getX()+1,n.getY()-3, 'N', 'b');
+			backLocation3 = new Location(n.getX()+2,n.getY()-3, 'N', 'b');
 //			Location leftLocation = new Location(n.getX(),n.getY()-2, 'E', 'l');
-			leftLocation = new Location(n.getX()+3,n.getY()+1, 'E', 'l');
+			leftLocation = new Location(n.getX()+4,n.getY()+2, 'E', 'l');
 //			Location rightLocation = new Location(n.getX()-2,n.getY(), 'W', 'r');
 			rightLocation = new Location(n.getX()-5,n.getY()+3, 'W', 'r');
-
+//			locationList.add(frontLocation);
+//			locationList.add(backLocation);
+//			backLocation.g = 10;
+//			leftLocation.g = 5;
+//			locationList.add(leftLocation);
+//			rightLocation.g = 5;
+//			locationList.add(rightLocation);
+//			frontLocation.distance = 1;
+//			backLocation.distance = 1;
 			// For Invalid Locations
 			// At bottom, cannot go forward
-				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc) ) {
+			if (!(n.getY() >= 19)) { 
+				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc)) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
 				}
-
-				if (!backLocation.checkLocation(loc)) {
-					addBack = false;
+			}
+			if (!(n.getY() <= -1)) { // At top, cannot go backward
+				if (backLocation1.checkLocation(loc) && backLocation2.checkLocation(loc)) {
+					backLocation.g = 5;
+					backLocation.distance = 1;
+					locationList.add(backLocation);
 				}
-			
+			}	
 			for (int i=1; i<=3; i++) {
 				for (int j=-3;j<=2;j++) {
 					Location check_right_location = new Location(x-j,y+i);
 					if (!check_right_location.checkLocation(loc)) {
 						addLeft = false;
 					}
-
+					
 				}
 			}
 
@@ -276,27 +317,24 @@ public class Location {
 					if (!check_right_location.checkLocation(loc)) {
 						addRight = false;
 					}
-
+					
 				}
 			}
+
+			
 		}
 		if (addLeft) {
 			leftLocation.g = 5;
-			leftLocation.distance = 6;
+			leftLocation.distance = 3;
 			locationList.add(leftLocation);
 		}
 		if (addRight) {
 			rightLocation.g = 5;
-			rightLocation.distance = 6;
+			rightLocation.distance = 3;
 			locationList.add(rightLocation);
 		}
-		if (addBack) {
-			backLocation.g = 5;
-			backLocation.distance = 1;
-			locationList.add(backLocation);
-		}
-		return locationList;
 		
+		return locationList;
 	}
 
 	

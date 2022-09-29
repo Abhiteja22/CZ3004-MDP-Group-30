@@ -1,4 +1,4 @@
-//package mdp_git_latest;
+package mdp_git;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
-
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -52,19 +51,28 @@ public class MainView extends JPanel {
 	public MainView() {
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		calculateDimensions();
-		//generateRandomObstacels(5);
 		setObstacles();
 		populateGridCells();
-		System.out.println("Finished Populating Grid Cells.");
-		populateGridCells();
 		Explore explore = new Explore(obstacleLocations);
+		
+		long startTime = System.nanoTime();
 		for (int i=0; i<obstacleLocations.size(); i++) {
 			Location nextLocation = explore.nearestNeighbour();
 			path.add(explore.printPath(nextLocation));
-			
-			
-			//pathAnimator(path);
 		}
+		long endTime = System.nanoTime();
+		long duration = (endTime - startTime)/1000000;
+		System.out.println("Time Taken (ms): " + duration);
+//		for (int i=0; i<obstacleLocations.size(); i++) {
+//			Location nextLocation = explore.nearestNeighbour();
+//
+//			//path.add('f');
+//			//System.out.println(nextLocation);
+//			path.add(explore.printPath(nextLocation));
+//			
+//			
+//			//pathAnimator(path);
+//		}
 //		try{ 
 //		      try (ServerSocket serverSocket = new ServerSocket(12345)) {
 //		    	  
@@ -89,64 +97,33 @@ public class MainView extends JPanel {
 //		      	populateGridCells();
 //				System.out.println("Finished Populating Grid Cells.");
 //				Explore explore = new Explore(obstacleLocations);
-////				String returned_obstacle = "";
-////				for (int i=0; i<obstacleLocations.size(); i++) {
-////					Location nextLocation = explore.nearestNeighbour();
-////
-////					//path.add('f');
-////					System.out.println(nextLocation);
-////					path.add(explore.printPath(nextLocation));
-////					returned_obstacle += String.valueOf(nextLocation.getX());
-////					returned_obstacle += "*";
-////					returned_obstacle += String.valueOf(nextLocation.getY());
-////					returned_obstacle += "*"; ca
-////					//pathAnimator(path);
-////				}
-//
-//		  		String returned_str = "";
-//	
+//				String returned_obstacle = "";
 //				for (int i=0; i<obstacleLocations.size(); i++) {
 //					Location nextLocation = explore.nearestNeighbour();
-//					System.out.println(nextLocation.getDirection());
+//
+//					//path.add('f');
+//					System.out.println(nextLocation);
 //					path.add(explore.printPath(nextLocation));
-//					char direction = nextLocation.getDirection();
-//					if (direction == 'N') {
-//						returned_str += String.valueOf(nextLocation.getX()+1);
-//						returned_str += ",";
-//						returned_str += String.valueOf(nextLocation.getY()-2);
-//					} else if (direction == 'E') {
-//						returned_str += String.valueOf(nextLocation.getX()+2);
-//						returned_str += ",";
-//						returned_str += String.valueOf(nextLocation.getY()+1);
-//					} else if (direction == 'W') {
-//						returned_str += String.valueOf(nextLocation.getX()-2);
-//						returned_str += ",";
-//						returned_str += String.valueOf(nextLocation.getY()-1);
-//					} else if (direction == 'S') {
-//						returned_str += String.valueOf(nextLocation.getX()-1);
-//						returned_str += ",";
-//						returned_str += String.valueOf(nextLocation.getY()+2);
-//					}							
-//					
-//					if (i != obstacleLocations.size()-1) {
-//						returned_str += ",";
-//					}
+//					returned_obstacle += String.valueOf(nextLocation.getX());
+//					returned_obstacle += "*";
+//					returned_obstacle += String.valueOf(nextLocation.getY());
+//					returned_obstacle += "*";
 //					//pathAnimator(path);
 //				}
-//		  		returned_str += "*";
 //
+//		  		String returned_str = "";
 //		  		for (int i=0; i<obstacleLocations.size(); i++) {
 //			  		for (Character item : path.get(i)) {
 //			  			returned_str += Character.toString(item);
 //			  			returned_str += ",";
 //			  		}
 //		  		}
-//				returned_str += ".";
+//		  		returned_str += ".";
+//				returned_obstacle += ".";
 //		          //dout.writeUTF(Arrays.toString(path.get(0).toArray())); //insert the directions from algo 
 //		  		System.out.println(returned_str);
-////		  		System.out.println(returned_obstacle);
 //		  		dout.writeUTF(returned_str);
-////				dout.writeUTF(returned_obstacle);
+//				dout.writeUTF(returned_obstacle);
 //		          dout.flush();
 //		          dout.close();
 //		          soc.close();
@@ -162,7 +139,7 @@ public class MainView extends JPanel {
 		
 		
 		//System.out.println(Arrays.toString(path.get(0).toArray()));
-		t = new Timer(500, new MoveListener());
+		t = new Timer(1000, new MoveListener());
 
 	}
 	
@@ -193,7 +170,7 @@ public class MainView extends JPanel {
 			char i = path.get(0).get(0);
 			path.get(0).remove(0);
 			System.out.println(i);
-			System.out.println("Test");
+			
 			if (i == 'f') {				
 				robot.moveForward();
 				
@@ -206,6 +183,7 @@ public class MainView extends JPanel {
 				robot.moveForward();
 				robot.moveForward();
 				robot.moveForward();
+				robot.moveForward();
 			}
 			else if (i == 'l') {
 				robot.moveForward();
@@ -215,12 +193,13 @@ public class MainView extends JPanel {
 				robot.moveForward();
 				robot.moveForward();
 				robot.moveForward();
+				robot.moveForward();
 			} 
 			else if (i == 'b') {
 				robot.moveBackward();
 			}
 			
-			
+			robot.getCurrentGridCell().getLocation().print();
 			repaint();
 		}
 	}
@@ -266,12 +245,15 @@ public class MainView extends JPanel {
 	private void setObstacles() {
 //		Location obstacleLocation = new Location(x,y);
 //		obstacleLocations.add(obstacleLocation);
+//		obstacleLocations.add(new Location(7,4,'S'));
+//		obstacleLocations.add(new Location(10,10,'E'));
+		
 		obstacleLocations.add(new Location(1,1,'S'));
 		obstacleLocations.add(new Location(6,7,'N'));
-		obstacleLocations.add(new Location(10,12,'E'));
-		obstacleLocations.add(new Location(13,17,'E'));
-		obstacleLocations.add(new Location(19,10,'W'));
 		obstacleLocations.add(new Location(15,3,'W'));
+		obstacleLocations.add(new Location(19,10,'W'));
+		obstacleLocations.add(new Location(13,17,'E'));
+		obstacleLocations.add(new Location(10,12,'E'));
 	}
 	
 	private void calculateDimensions() {
@@ -316,18 +298,18 @@ public class MainView extends JPanel {
 			int y = robotGridLocation.getY() * gridHeight;
 			robotExactLocation = new Location(x,y);
 		}
-		int robotWidth = gridWidth*3;
-		int robotHeight = gridHeight * 3;
+		int robotWidth = gridWidth*2;
+		int robotHeight = gridHeight * 2;
 		g.fillOval(robotExactLocation.getX(), robotExactLocation.getY(), robotWidth, robotHeight);
 		g.setColor(Color.red);
 		if (robot.getOrientation() == 'N') {
 			g.fillRect(robotExactLocation.getX()+gridWidth, robotExactLocation.getY(), gridWidth, gridHeight);
 		} else if (robot.getOrientation() == 'E') {
-			g.fillRect(robotExactLocation.getX()+(gridWidth*2), robotExactLocation.getY()+gridHeight, gridWidth, gridHeight);
+			g.fillRect(robotExactLocation.getX()+gridWidth, robotExactLocation.getY()+gridHeight, gridWidth, gridHeight); // g.fillRect(robotExactLocation.getX()+(gridWidth*2), robotExactLocation.getY()+gridHeight, gridWidth, gridHeight);
 		} else if (robot.getOrientation() == 'W') {
-			g.fillRect(robotExactLocation.getX(), robotExactLocation.getY()+gridHeight, gridWidth, gridHeight);
+			g.fillRect(robotExactLocation.getX(), robotExactLocation.getY(), gridWidth, gridHeight); //g.fillRect(robotExactLocation.getX(), robotExactLocation.getY()+gridHeight, gridWidth, gridHeight);
 		} else {
-			g.fillRect(robotExactLocation.getX()+gridWidth, robotExactLocation.getY()+(gridHeight*2), gridWidth, gridHeight);
+			g.fillRect(robotExactLocation.getX(), robotExactLocation.getY()+gridHeight, gridWidth, gridHeight); //g.fillRect(robotExactLocation.getX()+gridWidth, robotExactLocation.getY()+(gridHeight*2), gridWidth, gridHeight);
 		}
 //		g.fillOval(0, 0, robotWidth, robotHeight);
 	}

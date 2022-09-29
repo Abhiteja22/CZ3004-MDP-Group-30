@@ -1,13 +1,6 @@
-//package mdp_test_own;
+package mdp_git;
 
-/*
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor*/
 public class GridCell {
 	private Location location;
 	private boolean isObstacle;
@@ -26,4 +19,6 @@ public class GridCell {
 		this.location = a;
 		this.isObstacle = b;
 	}
+
+	
 }

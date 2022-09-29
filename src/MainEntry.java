@@ -1,4 +1,4 @@
-//package mdp_test_own;
+package mdp_git;
 
 import java.awt.EventQueue;
 import java.awt.GridLayout;
