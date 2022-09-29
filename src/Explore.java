@@ -86,7 +86,7 @@ public class Explore {
 	    robotPath.add('s');
 	    robotPath.add('c');
 	    System.out.println("");
-	    //System.out.println(robotPath);
+	    System.out.println(robotPath);
 	    return robotPath;
 	}
 	
@@ -129,7 +129,7 @@ public class Explore {
 				returned_location = target;
 			}
 		}
-		this.printPath(returned_location);
+		//this.printPath(returned_location);
 		//System.out.println(returned_location);
 		System.out.println(min_cost);
 		this.startingLocation = next_location;
