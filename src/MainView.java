@@ -63,6 +63,8 @@ public class MainView extends JPanel {
 		long endTime = System.nanoTime();
 		long duration = (endTime - startTime)/1000000;
 		System.out.println("Time Taken (ms): " + duration);
+		String outputPath = convert(path);
+		System.out.println(outputPath);
 //		for (int i=0; i<obstacleLocations.size(); i++) {
 //			Location nextLocation = explore.nearestNeighbour();
 //
@@ -153,6 +155,66 @@ public class MainView extends JPanel {
 	        builder.append(ch);
 	    }
 	    return builder.toString();
+	}
+
+	private static String convert(List<ArrayList<Character>> path2) {
+		String returnString = "";
+		boolean f = false;
+		boolean b = false;
+		int count = 0;
+
+		for (ArrayList<Character> x : path2) {
+			for (char y : x) {
+				if (y == 'f') {
+					if (b) {
+						int countB = count + 5;
+						if (countB == 10) {
+							countB = 0;
+						}
+						returnString = returnString + countB + ",";
+						count = 0;
+						b = false;
+						f = true;
+					} else if (count == 0) {
+						f = true;
+					} else if (count == 5) {
+						returnString = returnString + "5" + ",";
+						count = 0;
+					}
+					count++;
+				} else if (y == 'b') {
+					if (f) {
+						returnString = returnString + count + ",";
+						count = 0;
+						f = false;
+						b = true;
+					} else if (count == 0) {
+						b = true;
+					} else if (count == 5) {
+						returnString = returnString + "0" + ",";
+						count = 0;
+					}
+					count++;
+				} else {
+					if (f) {
+						returnString = returnString + count + ",";
+						count = 0;
+						f = false;
+					} else if (b) {
+						int countB = count + 5;
+						if (countB == 10) {
+							countB = 0;
+						}
+						returnString = returnString + countB + ",";
+						count = 0;
+						b = false;
+					}
+					returnString = returnString + y + ",";
+				}
+			}
+		}
+		returnString = returnString + ".";
+		return returnString;
 	}
 	
 	private class MoveListener implements ActionListener {
