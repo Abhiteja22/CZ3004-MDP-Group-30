@@ -198,6 +198,26 @@ public class MainView extends JPanel {
 			else if (i == 'b') {
 				robot.moveBackward();
 			}
+			else if (i == 'a') { // Back Left
+				robot.moveBackward();
+				robot.moveBackward();
+				robot.moveBackward();
+				robot.moveBackward();
+				robot.turnRight();
+				robot.moveBackward();
+				robot.moveBackward();
+				robot.moveBackward();
+			}
+			else if (i == 'd') { // Go back
+				robot.moveBackward();
+				robot.moveBackward();
+				robot.moveBackward();
+				robot.moveBackward();
+				robot.turnLeft();
+				robot.moveBackward();
+				robot.moveBackward();
+				robot.moveBackward();
+			}
 			
 			robot.getCurrentGridCell().getLocation().print();
 			repaint();

@@ -165,15 +165,15 @@ public class Explore {
 			
 			// For Blocked Locations
 			blockedLocations.add(new Location(x,y));
-//			blockedLocations.add(new Location(x-1,y-1));
-//			blockedLocations.add(new Location(x,y-1));
-//			blockedLocations.add(new Location(x+1,y-1));
-//			blockedLocations.add(new Location(x-1,y));
-//			
-//			blockedLocations.add(new Location(x+1,y));
-//			blockedLocations.add(new Location(x-1,y+1));
-//			blockedLocations.add(new Location(x,y+1));
-//			blockedLocations.add(new Location(x+1,y+1));
+			blockedLocations.add(new Location(x-1,y-1));
+			blockedLocations.add(new Location(x,y-1));
+			blockedLocations.add(new Location(x+1,y-1));
+			blockedLocations.add(new Location(x-1,y));
+
+			blockedLocations.add(new Location(x+1,y));
+			blockedLocations.add(new Location(x-1,y+1));
+			blockedLocations.add(new Location(x,y+1));
+			blockedLocations.add(new Location(x+1,y+1));
 		}
 		startingLocation = new Location(0,17, 'N');
 		
