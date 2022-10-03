@@ -1,4 +1,4 @@
-package mdp_git;
+//package mdp_git;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -146,6 +146,8 @@ public class Explore {
 	
 	public Explore() {
 	}
+	
+	
 	public Explore(List<Location> obstacleLocations2) {
 		this.openList = new PriorityQueue<Location>(new locationComparator());
 		for (Location obstacleLocation : obstacleLocations2) {
@@ -154,13 +156,13 @@ public class Explore {
 			int y = obstacleLocation.getY();
 			
 			if (direction == 'N') { //North
-				robotGoalLocations.add(new Location(x+1,y-2, 'S'));
+				robotGoalLocations.add(new Location(x+1,y-5, 'S'));
 			} else if (direction == 'E') { // East
-				robotGoalLocations.add(new Location(x+2,y+1, 'W'));
+				robotGoalLocations.add(new Location(x+5,y+1, 'W'));
 			} else if (direction == 'S') { // South
-				robotGoalLocations.add(new Location(x-1,y+2, 'N'));
+				robotGoalLocations.add(new Location(x-1,y+5, 'N'));
 			} else { // West
-				robotGoalLocations.add(new Location(x-2,y-1, 'E'));
+				robotGoalLocations.add(new Location(x-5,y-1, 'E'));
 			}
 			
 			// For Blocked Locations
