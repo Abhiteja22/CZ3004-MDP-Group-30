@@ -112,6 +112,7 @@ public class Location {
 		Location backRightLocation = new Location();
 		int x = n.getX();
 		int y = n.getY();
+		int numOfGrids = 2; // Number of grids the robot is allowed to exceed
 
 		if (n.direction == 'N') {
 			frontLocation = new Location(n.getX(),n.getY()-1, 'N', 'f');
@@ -129,7 +130,7 @@ public class Location {
 			rightLocation = new Location(n.getX()+5,n.getY()-3, 'E', 'r');
 
 			//For Invalid Locations
-			if (!(n.getY() <= 0)) { // At top, cannot go forward
+			if (!(y <= 0-numOfGrids)) { // At top, cannot go forward
 				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc)) { //&& frontLocation2.checkLocation(loc)) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
@@ -159,7 +160,8 @@ public class Location {
 					}
 				}
 			}
-			if (!(n.getY() >= 20)) { // At bottom, cannot go backward
+
+			if (!(y >= 18+numOfGrids)) { // At bottom, cannot go backward
 				if (backLocation1.checkLocation(loc) && backLocation2.checkLocation(loc)) {
 					backLocation.g = 5;
 					backLocation.distance = 1;
@@ -191,6 +193,31 @@ public class Location {
 					}
 				}
 			}
+
+			if (n.getY() <= 2-numOfGrids) { // At top, cannot turn left/right
+				addLeft = false;
+				addRight = false;
+			}
+			if (n.getY() >= 15+numOfGrids) { // At bottom, cannot turn backleft/backright
+				addBackLeft = false;
+				addBackRight = false;
+			}
+			if (n.getX() <= 3-numOfGrids) { // At left, cannot turn left/backleft
+				if (x == 3-numOfGrids) {
+					addLeft = false;
+				} else {
+					addLeft = false;
+					addBackLeft = false;
+				}
+			}
+			if (n.getX() >= 15+numOfGrids) { // At right, cannot turn right/backright
+				if (x == 15+numOfGrids) {
+					addRight = false;
+				} else {
+					addRight = false;
+					addBackRight = false;
+				}
+			}
 		}
 		else if (n.direction == 'E') {
 			frontLocation = new Location(n.getX()+1,n.getY(), 'E', 'f');
@@ -208,7 +235,7 @@ public class Location {
 			rightLocation = new Location(n.getX()+3,n.getY()+5, 'S', 'r');
 
 			// For Invalid Locations
-			if (!(n.getX() >= 19)) { // At right side, cannot go forward
+			if (!(x >= 19+numOfGrids)) { // At right side, cannot go forward
 				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc)) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
@@ -238,7 +265,7 @@ public class Location {
 					}
 				}
 			}
-			if (!(n.getX() <= -1)) { // At Left side, cannot go backward
+			if (!(x <= 1-numOfGrids)) { // At Left side, cannot go backward
 				if (backLocation1.checkLocation(loc) && backLocation2.checkLocation(loc)) {
 					backLocation.g = 5;
 					backLocation.distance = 1;
@@ -270,6 +297,31 @@ public class Location {
 					}
 				}
 			}
+
+			if (n.getY() <= 3-numOfGrids) { // At top, cannot turn left/backleft
+				if (y == 3-numOfGrids) {
+					addLeft = false;
+				} else {
+					addLeft = false;
+					addBackLeft = false;
+				}
+			}
+			if (n.getY() >= 15+numOfGrids) { // At bottom, cannot turn right/backright
+				if (y == 15+numOfGrids) {
+					addRight = false;
+				} else {
+					addRight = false;
+					addBackRight = false;
+				}
+			}
+			if (n.getX() <= 4-numOfGrids) { // At left, cannot turn backright/backleft
+				addBackLeft = false;
+				addBackRight = false;
+			}
+			if (n.getX() >= 17+numOfGrids) { // At right, cannot turn right/left
+				addRight = false;
+				addLeft = false;
+			}
 		}
 		else if (n.direction == 'W') {
 			frontLocation = new Location(n.getX() - 1,n.getY(), 'W', 'f');
@@ -287,7 +339,7 @@ public class Location {
 			rightLocation = new Location(n.getX()-3,n.getY()-5, 'N', 'r');
 
 			// For Invalid Locations
-			if (!(n.getX() <= 0)) { // At Left side, cannot go forward
+			if (!(x <= 0-numOfGrids)) { // At Left side, cannot go forward
 				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc)) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
@@ -317,7 +369,7 @@ public class Location {
 					}
 				}
 			}
-			if (!(n.getX() >= 20)) { // At Right side, cannot go backward
+			if (!(n.getX() >= 18+numOfGrids)) { // At Right side, cannot go backward
 				if (backLocation1.checkLocation(loc) && backLocation2.checkLocation(loc)) {
 					backLocation.g = 5;
 					backLocation.distance = 1;
@@ -349,6 +401,31 @@ public class Location {
 					}
 				}
 			}
+
+			if (n.getY() <= 4-numOfGrids) { // At top, cannot turn right/backright
+				if (y == 4-numOfGrids) {
+					addRight = false;
+				} else {
+					addRight = false;
+					addBackRight = false;
+				}
+			}
+			if (n.getY() >= 16+numOfGrids) { // At bottom, cannot turn left/backleft
+				if (y == 16+numOfGrids) {
+					addLeft = false;
+				} else {
+					addBackLeft = false;
+					addLeft = false;
+				}
+			}
+			if (n.getX() <= 2-numOfGrids) { // At left, cannot turn left/right
+				addRight = false;
+				addLeft = false;
+			}
+			if (n.getX() >= 15+numOfGrids) { // At right, cannot turn backright/backleft
+				addBackLeft = false;
+				addBackRight = false;
+			}
 		}
 		else {
 			frontLocation = new Location(n.getX(),n.getY()+1, 'S', 'f');
@@ -367,7 +444,7 @@ public class Location {
 
 			// For Invalid Locations
 			// At bottom, cannot go forward
-			if (!(n.getY() >= 19)) {
+			if (!(y >= 19+numOfGrids)) {
 				if (frontLocation.checkLocation(loc) && frontLocation1.checkLocation(loc)) {
 					frontLocation.distance = 1;
 					locationList.add(frontLocation);
@@ -397,7 +474,7 @@ public class Location {
 					}
 				}
 			}
-			if (!(n.getY() <= -1)) { // At top, cannot go backward
+			if (!(y <= 1-numOfGrids)) { // At top, cannot go backward
 				if (backLocation1.checkLocation(loc) && backLocation2.checkLocation(loc)) {
 					backLocation.g = 5;
 					backLocation.distance = 1;
@@ -427,6 +504,31 @@ public class Location {
 							addBackRight = false;
 						}
 					}
+				}
+			}
+
+			if (n.getY() <= 4-numOfGrids) { // At top, cannot turn backleft/backright
+				addBackLeft = false;
+				addBackRight = false;
+			}
+			if (n.getY() >= 17+numOfGrids) { // At bottom, cannot turn left/right
+				addLeft = false;
+				addRight = false;
+			}
+			if (n.getX() <= 4-numOfGrids) { // At left, cannot turn right/backright
+				if (x == 4-numOfGrids) {
+					addRight = false;
+				} else {
+					addRight = false;
+					addBackRight = false;
+				}
+			}
+			if (n.getX() >= 16+numOfGrids) { // At right, cannot turn left/backleft
+				if (x == 16+numOfGrids) {
+					addLeft = false;
+				} else {
+					addLeft = false;
+					addBackLeft = false;
 				}
 			}
 		}
