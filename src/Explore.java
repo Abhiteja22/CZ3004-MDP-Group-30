@@ -13,6 +13,11 @@ public class Explore {
 	private PriorityQueue<Location> openList;
 	private List<Location> blockedLocations = new ArrayList<Location>(); // For Obstacles
     private ArrayList<Location> closedList = new ArrayList<>();
+		private boolean invalidExplore;
+
+    public boolean getInvalidExplore() {
+    	return this.invalidExplore;
+    }
 
 	public Location aStar(Location start, Location target){
 	    //ArrayList<Location> openList = new ArrayList<>();
@@ -148,7 +153,7 @@ public class Explore {
 	}
 
 
-	public Explore(List<Location> obstacleLocations2) {
+	public Explore(List<Location> obstacleLocations2, int val) {
 		this.openList = new PriorityQueue<Location>(new locationComparator());
 		for (Location obstacleLocation : obstacleLocations2) {
 			int x = obstacleLocation.getX();
