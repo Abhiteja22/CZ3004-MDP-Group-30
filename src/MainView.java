@@ -53,18 +53,18 @@ public class MainView extends JPanel {
 		calculateDimensions();
 		//setObstacles();
 		populateGridCells();
-		Explore explore = new Explore(obstacleLocations);
-
-		long startTime = System.nanoTime();
-		for (int i=0; i<obstacleLocations.size(); i++) {
-			Location nextLocation = explore.nearestNeighbour();
-			path.add(explore.printPath(nextLocation));
-		}
-		long endTime = System.nanoTime();
-		long duration = (endTime - startTime)/1000000;
-		System.out.println("Time Taken (ms): " + duration);
-		String outputPath = convert(path);
-		System.out.println(outputPath);
+//		Explore explore = new Explore(obstacleLocations);
+//
+//		long startTime = System.nanoTime();
+//		for (int i=0; i<obstacleLocations.size(); i++) {
+//			Location nextLocation = explore.nearestNeighbour();
+//			path.add(explore.printPath(nextLocation));
+//		}
+//		long endTime = System.nanoTime();
+//		long duration = (endTime - startTime)/1000000;
+//		System.out.println("Time Taken (ms): " + duration);
+//		String outputPath = convert(path);
+//		System.out.println(outputPath);
 
 		///////////////Looping over j Code//////////////////////////////////////////////////////
 		// int min = 999999;
