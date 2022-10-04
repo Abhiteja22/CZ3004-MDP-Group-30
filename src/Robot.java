@@ -15,35 +15,35 @@ public class Robot {
 		  SOUTH,
 		  WEST
 	}
-	
-	private GridCell currentGridCell = new GridCell(new Location(0,17),false);
+
+	private GridCell currentGridCell = new GridCell(new Location(0,18),false);
 	private Location exactLocation;
 	private char orientation = 'N';
-	
+
 	public GridCell getCurrentGridCell() {
 		return this.currentGridCell;
 	}
-	
+
 	public void setCurrentGridCell(Location a, boolean b) {
 		this.currentGridCell = new GridCell(a,b);
 	}
-	
+
 	public Location getExactLocation() {
 		return this.exactLocation;
 	}
-	
+
 	public void setExactLocation(Location a) {
 		this.exactLocation = a;
 	}
-	
+
 	public int getOrientation() {
 		return this.orientation;
 	}
-	
+
 	public void setOrientation(char a) {
 		this.orientation = a;
 	}
-	
+
 	public Robot() {
 	}
 	public Robot(GridCell a, Location b, char c) {
@@ -51,10 +51,10 @@ public class Robot {
 		this.exactLocation = b;
 		this.orientation = c;
 	}
-	
+
 	public void moveForward() { //Adjust it such that it cannot move forward when facing edges
 		Location currentLocation = this.getCurrentGridCell().getLocation();
-		
+
 		Location newLocation = new Location();
 		if (this.orientation == 'N') {
 			newLocation = new Location(currentLocation.getX(), currentLocation.getY()-1);
@@ -65,13 +65,13 @@ public class Robot {
 		} else {
 			newLocation = new Location(currentLocation.getX(), currentLocation.getY()+1);
 		}
-		
+
 		this.setCurrentGridCell(newLocation, false);
 	}
-	
+
 	public void moveBackward() { //Adjust it such that it cannot move forward when facing edges
 		Location currentLocation = this.getCurrentGridCell().getLocation();
-		
+
 		Location newLocation = new Location();
 		if (this.orientation == 'N') {
 			newLocation = new Location(currentLocation.getX(), currentLocation.getY()+1);
@@ -82,10 +82,10 @@ public class Robot {
 		} else {
 			newLocation = new Location(currentLocation.getX(), currentLocation.getY()-1);
 		}
-		
+
 		this.setCurrentGridCell(newLocation, false);
 	}
-	
+
 	public void turnRight() {
 		if (this.orientation == 'N') {
 			this.setOrientation('E');
@@ -97,7 +97,7 @@ public class Robot {
 			this.setOrientation('W');
 		}
 	}
-	
+
 	public void turnLeft() {
 		if (this.orientation == 'N') {
 			this.setOrientation('W');
