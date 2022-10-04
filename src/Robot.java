@@ -16,7 +16,7 @@ public class Robot {
 		  WEST
 	}
 
-	private GridCell currentGridCell = new GridCell(new Location(0,18),false);
+	private GridCell currentGridCell = new GridCell(new Location(0,17),false);
 	private Location exactLocation;
 	private char orientation = 'N';
 

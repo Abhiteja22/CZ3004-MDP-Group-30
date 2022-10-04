@@ -146,31 +146,15 @@ public class Explore {
 
 	public Explore() {
 	}
-	
-	
+
+
 	public Explore(List<Location> obstacleLocations2) {
 		this.openList = new PriorityQueue<Location>(new locationComparator());
-
 		for (Location obstacleLocation : obstacleLocations2) {
 			int x = obstacleLocation.getX();
 			int y = obstacleLocation.getY();
-<<<<<<< HEAD
-			
-			if (direction == 'N') { //North
-				robotGoalLocations.add(new Location(x+1,y-5, 'S'));
-			} else if (direction == 'E') { // East
-				robotGoalLocations.add(new Location(x+5,y+1, 'W'));
-			} else if (direction == 'S') { // South
-				robotGoalLocations.add(new Location(x-1,y+5, 'N'));
-			} else { // West
-				robotGoalLocations.add(new Location(x-5,y-1, 'E'));
-			}
-			
-			// For Blocked Locations
-=======
 
 			// For Virtual boundary blocked Locations
->>>>>>> 73ff65e5192ded2ef419a6a0eef4c6c494201c9a
 			blockedLocations.add(new Location(x,y));
 			blockedLocations.add(new Location(x-1,y-1));
 			blockedLocations.add(new Location(x,y-1));
@@ -182,17 +166,17 @@ public class Explore {
 			blockedLocations.add(new Location(x,y+1));
 			blockedLocations.add(new Location(x+1,y+1));
 		}
-
 		for (Location obstacleLocation : obstacleLocations2) {
 			int direction = obstacleLocation.getDirection();
 			int x = obstacleLocation.getX();
 			int y = obstacleLocation.getY();
 
-			int furthestGrid = 2; // Furthest grid cell the robot stops before image
+			int furthestGrid = val; // Furthest grid cell the robot stops before image
 
 			if (direction == 'N') { //North
 				//robotGoalLocations.add(new Location(x+1,y-2, 'S')); // 10 cm away
 				//robotGoalLocations.add(new Location(x+1,y-5, 'S')); // 50 cm away
+				//robotGoalLocations.add(new Location(x+1,y-furthestGrid, 'S'));
 				for (int i=furthestGrid; i>=2; i--) {
 					if (y-i <= 0) {
 						continue;
@@ -204,7 +188,7 @@ public class Explore {
 
 					for (int j=-2;j<=0;j++) {
 						boolean currLocationUnavail = false;
-						for (int k = y_robot-2; k >= y-2; k--) {
+						for (int k = y_robot-5; k <= y-2; k++) {
 							Location check_location = new Location(x_robot+j,k);
 							if (!check_location.checkLocation(blockedLocations)) {
 								currLocationUnavail = true;
@@ -226,6 +210,7 @@ public class Explore {
 			} else if (direction == 'E') { // East
 				//robotGoalLocations.add(new Location(x+2,y+1, 'W')); // 10 cm away
 				//robotGoalLocations.add(new Location(x+5,y+1, 'W')); // 50 cm away
+				//robotGoalLocations.add(new Location(x+furthestGrid,y+1, 'W')); // 50 cm away
 				for (int i=furthestGrid; i>=2; i--) {
 					if (x+i >= 19) {
 						continue;
@@ -237,7 +222,7 @@ public class Explore {
 
 					for (int j=-2;j<=0;j++) {
 						boolean currLocationUnavail = false;
-						for (int k = x_robot+2; k >= x+2; k--) {
+						for (int k = x_robot+5; k >= x+2; k--) {
 							Location check_location = new Location(k,y_robot+j);
 							if (!check_location.checkLocation(blockedLocations)) {
 								currLocationUnavail = true;
@@ -257,8 +242,8 @@ public class Explore {
 					}
 				}
 			} else if (direction == 'S') { // South
-				//robotGoalLocations.add(new Location(x-1,y+2, 'N')); // 10 cm away
-				//robotGoalLocations.add(new Location(x-1,y+5, 'N')); // 50 cm away
+//				robotGoalLocations.add(new Location(x-1,y+furthestGrid, 'N')); // 10 cm away
+//				robotGoalLocations.add(new Location(x-1,y+5, 'N')); // 50 cm away
 				for (int i=furthestGrid; i>=2; i--) {
 					if (y+i >= 19) {
 						continue;
@@ -270,7 +255,7 @@ public class Explore {
 
 					for (int j=0;j<=2;j++) {
 						boolean currLocationUnavail = false;
-						for (int k = y_robot+2; k >= y+2; k--) {
+						for (int k = y_robot+5; k >= y+2; k--) {
 							Location check_location = new Location(x_robot+j,k);
 							if (!check_location.checkLocation(blockedLocations)) {
 								currLocationUnavail = true;
@@ -290,7 +275,7 @@ public class Explore {
 					}
 				}
 			} else { // West
-				//robotGoalLocations.add(new Location(x-2,y-1, 'E')); // 10 cm away
+				//robotGoalLocations.add(new Location(x-furthestGrid,y-1, 'E')); // 10 cm away
 				//robotGoalLocations.add(new Location(x-5,y-1, 'E')); // 50 cm away
 				for (int i=furthestGrid; i>=2; i--) {
 					if (x-i <= 0) {
@@ -303,7 +288,7 @@ public class Explore {
 
 					for (int j=0;j<=2;j++) {
 						boolean currLocationUnavail = false;
-						for (int k = x_robot-2; k <= x-2; k++) {
+						for (int k = x_robot-5; k <= x-2; k++) {
 							Location check_location = new Location(k,y_robot+j);
 							if (!check_location.checkLocation(blockedLocations)) {
 								currLocationUnavail = true;
@@ -324,7 +309,12 @@ public class Explore {
 				}
 			}
 		}
-		startingLocation = new Location(0,18, 'N');
+		if (robotGoalLocations.size() < obstacleLocations2.size()) {
+			invalidExplore = true;
+		} else {
+			invalidExplore = false;
+		}
+		startingLocation = new Location(0,17, 'N');
 
 	}
 
