@@ -15,16 +15,20 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.nio.charset.StandardCharsets;
 
 public class MainView extends JPanel {
 
@@ -117,10 +121,16 @@ public class MainView extends JPanel {
 
 		        Socket soc = serverSocket.accept();
 		          System.out.println("Receive new connection: " + soc.getInetAddress());
-		          DataOutputStream dout=new DataOutputStream(soc.getOutputStream());
-		          DataInputStream in = new DataInputStream(soc.getInputStream());
+		          BufferedOutputStream bout = new BufferedOutputStream(soc.getOutputStream());
+		          //DataOutputStream dout=new DataOutputStream(bout);
+		          BufferedInputStream bin = new BufferedInputStream(soc.getInputStream());
+		          //DataInputStream in = new DataInputStream(bin);
+		          byte[] buf = new byte[10000];
+		          bin.read(buf);
+		          String msg = new String(buf, StandardCharsets.UTF_8);
+		          
+		          //String msg=(String)in.readUTF();
 
-		          String msg=(String)in.readUTF();
 		          System.out.println("Client message: "+msg);
 		          String[] obstacle_split = msg.split(",");
 		          System.out.println(obstacle_split[0].split("'")[1]);
@@ -135,56 +145,78 @@ public class MainView extends JPanel {
 		          }
 		      	populateGridCells();
 				System.out.println("Finished Populating Grid Cells.");
-				int numOfGrids = 2;
+				int numOfGrids = 6;
 				Explore explore = new Explore(obstacleLocations, numOfGrids);
 				String returned_obstacle = "";
 				for (int i=0; i<obstacleLocations.size(); i++) {
-					Location nextLocation = explore.nearestNeighbour();
+					Location nextLocation1 = explore.nearestNeighbour();
 
-					path.add(explore.printPath(nextLocation));
-
-					if (nextLocation.getDirection() == 'N') {
-						returned_obstacle += String.valueOf(nextLocation.getX() + 1);
-						returned_obstacle += ",";
-						returned_obstacle += String.valueOf(nextLocation.getY() - numOfGrids);
-						if (i != obstacleLocations.size()-1) {
-							returned_obstacle += ",";
-						}
-					} else if (nextLocation.getDirection() == 'W') {
-						returned_obstacle += String.valueOf(nextLocation.getX() - numOfGrids);
-						returned_obstacle += ",";
-						returned_obstacle += String.valueOf(nextLocation.getY() - 1);
-						if (i != obstacleLocations.size()-1) {
-							returned_obstacle += ",";
-						}
-					} else if (nextLocation.getDirection() == 'E') {
-						returned_obstacle += String.valueOf(nextLocation.getX() + numOfGrids);
-						returned_obstacle += ",";
-						returned_obstacle += String.valueOf(nextLocation.getY() + 1);
-						if (i != obstacleLocations.size()-1) {
-							returned_obstacle += ",";
-						}
-					} else {
-						returned_obstacle += String.valueOf(nextLocation.getX() - 1);
-						returned_obstacle += ",";
-						returned_obstacle += String.valueOf(nextLocation.getY() + numOfGrids);
-						if (i != obstacleLocations.size()-1) {
-							returned_obstacle += ",";
-						}
+					path.add(explore.printPath(nextLocation1));
+					Map<String, String> obstacleLocation = explore.obstacleDict;
+					String nextLocation = obstacleLocation.get(explore.locationToString(nextLocation1));
+					if (nextLocation == null) {
+						nextLocation = "20,20";
 					}
+					returned_obstacle += nextLocation;
+					if (i != obstacleLocations.size()-1) {
+						returned_obstacle += ",";
+					}
+//					if (nextLocation.getDirection() == 'N') {
+//						returned_obstacle += String.valueOf(nextLocation.getX() + 1);
+//						returned_obstacle += ",";
+//						returned_obstacle += String.valueOf(nextLocation.getY() - numOfGrids);
+//						if (i != obstacleLocations.size()-1) {
+//							returned_obstacle += ",";
+//						}
+//					} else if (nextLocation.getDirection() == 'W') {
+//						returned_obstacle += String.valueOf(nextLocation.getX() - numOfGrids);
+//						returned_obstacle += ",";
+//						returned_obstacle += String.valueOf(nextLocation.getY() - 1);
+//						if (i != obstacleLocations.size()-1) {
+//							returned_obstacle += ",";
+//						}
+//					} else if (nextLocation.getDirection() == 'E') {
+//						returned_obstacle += String.valueOf(nextLocation.getX() + numOfGrids);
+//						returned_obstacle += ",";
+//						returned_obstacle += String.valueOf(nextLocation.getY() + 1);
+//						if (i != obstacleLocations.size()-1) {
+//							returned_obstacle += ",";
+//						}
+//					} else {
+//						returned_obstacle += String.valueOf(nextLocation.getX() - 1);
+//						returned_obstacle += ",";
+//						returned_obstacle += String.valueOf(nextLocation.getY() + numOfGrids);
+//						if (i != obstacleLocations.size()-1) {
+//							returned_obstacle += ",";
+//						}
+//					}
 
 				}
 				String outputPath = convert(path);
 		  		String returned_str = "";
 
 		  		returned_str = returned_obstacle + "*" + outputPath;
-				returned_obstacle += ".";
+				//returned_obstacle += ".";
 		          //dout.writeUTF(Arrays.toString(path.get(0).toArray())); //insert the directions from algo
 		  		System.out.println(returned_str);
-		  		dout.writeUTF(returned_str);
-				dout.writeUTF(returned_obstacle);
-		          dout.flush();
-		          dout.close();
+		  		byte[] bufout = returned_str.getBytes(StandardCharsets.UTF_8);
+		  		bout.write(bufout);
+		  		//dout.writeUTF(returned_str);
+				//dout.writeUTF(returned_obstacle);
+//		  		try {
+//					TimeUnit.SECONDS.sleep(15);
+//				} catch (InterruptedException e) {
+//					System.out.println(e);
+//				}
+		          //dout.flush();
+		          bout.flush();
+		          try {
+						TimeUnit.SECONDS.sleep(15);
+					} catch (InterruptedException e) {
+						System.out.println(e);
+					}
+		          bout.close();
+		          //dout.close();
 		          soc.close();
 		      }
 		     }

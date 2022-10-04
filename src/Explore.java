@@ -2,7 +2,9 @@
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 public class Explore {
@@ -18,7 +20,7 @@ public class Explore {
     public boolean getInvalidExplore() {
     	return this.invalidExplore;
     }
-
+    Map<String, String> obstacleDict = new HashMap<String, String>();
 	public Location aStar(Location start, Location target){
 	    //ArrayList<Location> openList = new ArrayList<>();
 
@@ -209,6 +211,7 @@ public class Explore {
 					}
 					if (locationAvail) {
 						robotGoalLocations.add(new_location);
+						obstacleDict.put(locationToString(new_location), locationToString(obstacleLocation));
 						break;
 					}
 				}
@@ -243,13 +246,14 @@ public class Explore {
 					}
 					if (locationAvail) {
 						robotGoalLocations.add(new_location);
+						obstacleDict.put(locationToString(new_location), locationToString(obstacleLocation));
 						break;
 					}
 				}
 			} else if (direction == 'S') { // South
 //				robotGoalLocations.add(new Location(x-1,y+furthestGrid, 'N')); // 10 cm away
 //				robotGoalLocations.add(new Location(x-1,y+5, 'N')); // 50 cm away
-				for (int i=furthestGrid; i>=2; i--) {
+				for (int i=furthestGrid; i>=4; i--) {
 					if (y+i >= 19) {
 						continue;
 					}
@@ -275,14 +279,17 @@ public class Explore {
 						}
 					}
 					if (locationAvail) {
+						System.out.println("Test");
+						new_location.print();
 						robotGoalLocations.add(new_location);
+						obstacleDict.put(locationToString(new_location), locationToString(obstacleLocation));
 						break;
 					}
 				}
 			} else { // West
 				//robotGoalLocations.add(new Location(x-furthestGrid,y-1, 'E')); // 10 cm away
 				//robotGoalLocations.add(new Location(x-5,y-1, 'E')); // 50 cm away
-				for (int i=furthestGrid; i>=2; i--) {
+				for (int i=furthestGrid; i>=4; i--) {
 					if (x-i <= 0) {
 						continue;
 					}
@@ -309,11 +316,13 @@ public class Explore {
 					}
 					if (locationAvail) {
 						robotGoalLocations.add(new_location);
+						obstacleDict.put(locationToString(new_location), locationToString(obstacleLocation));
 						break;
 					}
 				}
 			}
-		}
+			
+		};
 		if (robotGoalLocations.size() < obstacleLocations2.size()) {
 			invalidExplore = true;
 		} else {
@@ -321,6 +330,15 @@ public class Explore {
 		}
 		startingLocation = new Location(0,17, 'N');
 
+	}
+	
+	public String locationToString(Location target) {
+		String res = "";
+		res += Integer.toString(target.getX());
+		res += ",";
+		res += Integer.toString(target.getY());
+		
+		return res;
 	}
 
 
