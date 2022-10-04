@@ -53,9 +53,9 @@ public class MainView extends JPanel {
 		calculateDimensions();
 
 		// Comment when doing socket code ////////////
-		setObstacles();
-		populateGridCells();
-		int distance;
+		// setObstacles();
+		// populateGridCells();
+		// int distance;
 		//////////////////////////////////////////////
 
 		//////////////////// ORIGINAL /////////////////////////////////////
@@ -77,121 +77,121 @@ public class MainView extends JPanel {
 		/////////////////////////////////////////////////////////////////////
 
 		////////////////////////// ADDED FOR LOOPS /////////////////////////////////////
-		int min = 999999;
-		String outputPathFinal = "";
-		for (int j = 5; j >= 2; j--) {
-			List<ArrayList<Character>> testing_path = new ArrayList<ArrayList<Character>>();
-			Explore explore = new Explore(obstacleLocations, j);
-			if (explore.getInvalidExplore()) {
-				System.out.println("Unable to generate path for j = " + j);
-				continue;
-			}
-
-			long startTime = System.nanoTime();
-			for (int i=0; i<obstacleLocations.size(); i++) {
-				Location nextLocation = explore.nearestNeighbour();
-				testing_path.add(explore.printPath(nextLocation));
-			}
-			long endTime = System.nanoTime();
-			long duration = (endTime - startTime)/1000000;
-			System.out.println("Time Taken (ms) for j = " + j + ": " + duration);
-			String outputPath = convert(testing_path);
-			System.out.println(outputPath);
-			distance = getDistance(testing_path);
-			System.out.println("Length of Path: " + outputPath.length());
-			System.out.println("Distance of Path: " + distance);
-			if (distance < min) {
-				min = distance;
-				outputPathFinal = outputPath;
-				path = testing_path;
-			}
-			System.out.println();
-		}
-		System.out.println("Output Path: " + outputPathFinal);
-		System.out.println("Distance of Path: " + min);
+		// int min = 999999;
+		// String outputPathFinal = "";
+		// for (int j = 5; j >= 2; j--) {
+		// 	List<ArrayList<Character>> testing_path = new ArrayList<ArrayList<Character>>();
+		// 	Explore explore = new Explore(obstacleLocations, j);
+		// 	if (explore.getInvalidExplore()) {
+		// 		System.out.println("Unable to generate path for j = " + j);
+		// 		continue;
+		// 	}
+		//
+		// 	long startTime = System.nanoTime();
+		// 	for (int i=0; i<obstacleLocations.size(); i++) {
+		// 		Location nextLocation = explore.nearestNeighbour();
+		// 		testing_path.add(explore.printPath(nextLocation));
+		// 	}
+		// 	long endTime = System.nanoTime();
+		// 	long duration = (endTime - startTime)/1000000;
+		// 	System.out.println("Time Taken (ms) for j = " + j + ": " + duration);
+		// 	String outputPath = convert(testing_path);
+		// 	System.out.println(outputPath);
+		// 	distance = getDistance(testing_path);
+		// 	System.out.println("Length of Path: " + outputPath.length());
+		// 	System.out.println("Distance of Path: " + distance);
+		// 	if (distance < min) {
+		// 		min = distance;
+		// 		outputPathFinal = outputPath;
+		// 		path = testing_path;
+		// 	}
+		// 	System.out.println();
+		// }
+		// System.out.println("Output Path: " + outputPathFinal);
+		// System.out.println("Distance of Path: " + min);
 		///////////////////////////////////////////////////////////////
 
 		////////////////// COnnection ////////////////////////////////////////////
-//		try{
-//		      try (ServerSocket serverSocket = new ServerSocket(12345)) {
-//
-//		        Socket soc = serverSocket.accept();
-//		          System.out.println("Receive new connection: " + soc.getInetAddress());
-//		          DataOutputStream dout=new DataOutputStream(soc.getOutputStream());
-//		          DataInputStream in = new DataInputStream(soc.getInputStream());
-//
-//		          String msg=(String)in.readUTF();
-//		          System.out.println("Client message: "+msg);
-//		          String[] obstacle_split = msg.split(",");
-//		          System.out.println(obstacle_split[0].split("'")[1]);
-//	        	  System.out.println(obstacle_split[1].split("'")[1]);
-//	        	  System.out.println(obstacle_split[2].split("'")[1]);
-//		          int numberOfObstacle = Integer.parseInt(obstacle_split[0].split("'")[1]);
-//		          for (int i = 0; i < numberOfObstacle; i++) {
-//		        	  int x = Integer.parseInt(obstacle_split[3*i+1].split("'")[1]);
-//		        	  int y = Integer.parseInt(obstacle_split[3*i+2].split("'")[1]);
-//		        	  char direction = obstacle_split[3*i+3].split("'")[1].charAt(0);
-//		        	  obstacleLocations.add(new Location(x,y,direction));
-//		          }
-//		      	populateGridCells();
-//				System.out.println("Finished Populating Grid Cells.");
-//				int numOfGrids = 2;
-//				Explore explore = new Explore(obstacleLocations, numOfGrids);
-//				String returned_obstacle = "";
-//				for (int i=0; i<obstacleLocations.size(); i++) {
-//					Location nextLocation = explore.nearestNeighbour();
-//
-//					path.add(explore.printPath(nextLocation));
-//
-//					if (nextLocation.getDirection() == 'N') {
-//						returned_obstacle += String.valueOf(nextLocation.getX() + 1);
-//						returned_obstacle += ",";
-//						returned_obstacle += String.valueOf(nextLocation.getY() - numOfGrids);
-//						if (i != obstacleLocations.size()-1) {
-//							returned_obstacle += ",";
-//						}
-//					} else if (nextLocation.getDirection() == 'W') {
-//						returned_obstacle += String.valueOf(nextLocation.getX() - numOfGrids);
-//						returned_obstacle += ",";
-//						returned_obstacle += String.valueOf(nextLocation.getY() - 1);
-//						if (i != obstacleLocations.size()-1) {
-//							returned_obstacle += ",";
-//						}
-//					} else if (nextLocation.getDirection() == 'E') {
-//						returned_obstacle += String.valueOf(nextLocation.getX() + numOfGrids);
-//						returned_obstacle += ",";
-//						returned_obstacle += String.valueOf(nextLocation.getY() + 1);
-//						if (i != obstacleLocations.size()-1) {
-//							returned_obstacle += ",";
-//						}
-//					} else {
-//						returned_obstacle += String.valueOf(nextLocation.getX() - 1);
-//						returned_obstacle += ",";
-//						returned_obstacle += String.valueOf(nextLocation.getY() + numOfGrids);
-//						if (i != obstacleLocations.size()-1) {
-//							returned_obstacle += ",";
-//						}
-//					}
-//
-//				}
-//				String outputPath = convert(path);
-//		  		String returned_str = "";
-//
-//		  		returned_str = returned_obstacle + "*" + outputPath;
-//				returned_obstacle += ".";
-//		          //dout.writeUTF(Arrays.toString(path.get(0).toArray())); //insert the directions from algo
-//		  		System.out.println(returned_str);
-//		  		dout.writeUTF(returned_str);
-//				dout.writeUTF(returned_obstacle);
-//		          dout.flush();
-//		          dout.close();
-//		          soc.close();
-//		      }
-//		     }
-//		catch(Exception e)
-//		  {
-//		      e.printStackTrace();
-//		  }
+		try{
+		      try (ServerSocket serverSocket = new ServerSocket(12345)) {
+
+		        Socket soc = serverSocket.accept();
+		          System.out.println("Receive new connection: " + soc.getInetAddress());
+		          DataOutputStream dout=new DataOutputStream(soc.getOutputStream());
+		          DataInputStream in = new DataInputStream(soc.getInputStream());
+
+		          String msg=(String)in.readUTF();
+		          System.out.println("Client message: "+msg);
+		          String[] obstacle_split = msg.split(",");
+		          System.out.println(obstacle_split[0].split("'")[1]);
+	        	  System.out.println(obstacle_split[1].split("'")[1]);
+	        	  System.out.println(obstacle_split[2].split("'")[1]);
+		          int numberOfObstacle = Integer.parseInt(obstacle_split[0].split("'")[1]);
+		          for (int i = 0; i < numberOfObstacle; i++) {
+		        	  int x = Integer.parseInt(obstacle_split[3*i+1].split("'")[1]);
+		        	  int y = Integer.parseInt(obstacle_split[3*i+2].split("'")[1]);
+		        	  char direction = obstacle_split[3*i+3].split("'")[1].charAt(0);
+		        	  obstacleLocations.add(new Location(x,y,direction));
+		          }
+		      	populateGridCells();
+				System.out.println("Finished Populating Grid Cells.");
+				int numOfGrids = 2;
+				Explore explore = new Explore(obstacleLocations, numOfGrids);
+				String returned_obstacle = "";
+				for (int i=0; i<obstacleLocations.size(); i++) {
+					Location nextLocation = explore.nearestNeighbour();
+
+					path.add(explore.printPath(nextLocation));
+
+					if (nextLocation.getDirection() == 'N') {
+						returned_obstacle += String.valueOf(nextLocation.getX() + 1);
+						returned_obstacle += ",";
+						returned_obstacle += String.valueOf(nextLocation.getY() - numOfGrids);
+						if (i != obstacleLocations.size()-1) {
+							returned_obstacle += ",";
+						}
+					} else if (nextLocation.getDirection() == 'W') {
+						returned_obstacle += String.valueOf(nextLocation.getX() - numOfGrids);
+						returned_obstacle += ",";
+						returned_obstacle += String.valueOf(nextLocation.getY() - 1);
+						if (i != obstacleLocations.size()-1) {
+							returned_obstacle += ",";
+						}
+					} else if (nextLocation.getDirection() == 'E') {
+						returned_obstacle += String.valueOf(nextLocation.getX() + numOfGrids);
+						returned_obstacle += ",";
+						returned_obstacle += String.valueOf(nextLocation.getY() + 1);
+						if (i != obstacleLocations.size()-1) {
+							returned_obstacle += ",";
+						}
+					} else {
+						returned_obstacle += String.valueOf(nextLocation.getX() - 1);
+						returned_obstacle += ",";
+						returned_obstacle += String.valueOf(nextLocation.getY() + numOfGrids);
+						if (i != obstacleLocations.size()-1) {
+							returned_obstacle += ",";
+						}
+					}
+
+				}
+				String outputPath = convert(path);
+		  		String returned_str = "";
+
+		  		returned_str = returned_obstacle + "*" + outputPath;
+				returned_obstacle += ".";
+		          //dout.writeUTF(Arrays.toString(path.get(0).toArray())); //insert the directions from algo
+		  		System.out.println(returned_str);
+		  		dout.writeUTF(returned_str);
+				dout.writeUTF(returned_obstacle);
+		          dout.flush();
+		          dout.close();
+		          soc.close();
+		      }
+		     }
+		catch(Exception e)
+		  {
+		      e.printStackTrace();
+		  }
 		///////////////////////////////////////////////////////////////////////////
 		t = new Timer(300, new MoveListener());
 	}
