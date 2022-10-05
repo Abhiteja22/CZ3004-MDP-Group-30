@@ -56,12 +56,6 @@ public class MainView extends JPanel {
 		setSize(PANEL_WIDTH, PANEL_HEIGHT);
 		calculateDimensions();
 
-		// Comment when doing socket code ////////////
-		// setObstacles();
-		// populateGridCells();
-		// int distance;
-		//////////////////////////////////////////////
-
 		//////////////////// ORIGINAL /////////////////////////////////////
 		//Explore explore = new Explore(obstacleLocations);
 //		long startTime = System.nanoTime();
@@ -81,6 +75,10 @@ public class MainView extends JPanel {
 		/////////////////////////////////////////////////////////////////////
 
 		////////////////////////// ADDED FOR LOOPS /////////////////////////////////////
+		// Comment when doing socket code ////////////
+		// setObstacles();
+		// populateGridCells();
+		// int distance;
 		// int min = 999999;
 		// String outputPathFinal = "";
 		// for (int j = 5; j >= 2; j--) {
@@ -128,7 +126,7 @@ public class MainView extends JPanel {
 		          byte[] buf = new byte[10000];
 		          bin.read(buf);
 		          String msg = new String(buf, StandardCharsets.UTF_8);
-		          
+
 		          //String msg=(String)in.readUTF();
 
 		          System.out.println("Client message: "+msg);
