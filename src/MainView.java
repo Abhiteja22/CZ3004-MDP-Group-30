@@ -143,11 +143,15 @@ public class MainView extends JPanel {
 		          }
 		      	populateGridCells();
 				System.out.println("Finished Populating Grid Cells.");
-				int numOfGrids = 6;
+				
+				// Changeable values
+				int numOfGrids = 6; // Max grid distance from which robot can capture image (x-1)*10= val of distance in cm
+				int gridsExceedingBoundaries = 2; // Number of grid cells allowed to exceed past boundary
+
 				Explore explore = new Explore(obstacleLocations, numOfGrids);
 				String returned_obstacle = "";
 				for (int i=0; i<obstacleLocations.size(); i++) {
-					Location nextLocation1 = explore.nearestNeighbour();
+					Location nextLocation1 = explore.nearestNeighbour(gridsExceedingBoundaries);
 
 					path.add(explore.printPath(nextLocation1));
 					Map<String, String> obstacleLocation = explore.obstacleDict;

@@ -91,7 +91,7 @@ public class Location {
 		return null;
 	}
 
-	public List<Location> getNeighbors(Location n, List<Location> loc) {
+	public List<Location> getNeighbors(Location n, List<Location> loc, int exceed) {
 		ArrayList<Location> locationList = new ArrayList<>();
 		boolean addRight = true;
 		boolean addLeft = true;
@@ -112,7 +112,7 @@ public class Location {
 		Location backRightLocation = new Location();
 		int x = n.getX();
 		int y = n.getY();
-		int numOfGrids = 2; // Number of grids the robot is allowed to exceed
+		int numOfGrids = exceed; // Number of grids the robot is allowed to exceed
 
 		if (n.direction == 'N') {
 			frontLocation = new Location(n.getX(),n.getY()-1, 'N', 'f');

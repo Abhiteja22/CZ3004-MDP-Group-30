@@ -14,14 +14,15 @@ public class Explore {
 	private Robot r = new Robot();
 	private PriorityQueue<Location> openList;
 	private List<Location> blockedLocations = new ArrayList<Location>(); // For Obstacles
-    private ArrayList<Location> closedList = new ArrayList<>();
-		private boolean invalidExplore;
+  private ArrayList<Location> closedList = new ArrayList<>();
+	private boolean invalidExplore;
+	Map<String, String> obstacleDict = new HashMap<String, String>();
 
-    public boolean getInvalidExplore() {
-    	return this.invalidExplore;
-    }
-    Map<String, String> obstacleDict = new HashMap<String, String>();
-	public Location aStar(Location start, Location target){
+  public boolean getInvalidExplore() {
+  	return this.invalidExplore;
+  }
+
+	public Location aStar(Location start, Location target, int exceed){
 	    //ArrayList<Location> openList = new ArrayList<>();
 
 	    start.f = start.g + start.calculateHeuristic(start, target);
@@ -34,7 +35,7 @@ public class Explore {
 	            return n;
 	        }
 
-	        for(Location  edge : n.getNeighbors(n, blockedLocations)){
+	        for(Location  edge : n.getNeighbors(n, blockedLocations, exceed)){
 	            Location m = edge;
 	            double totalWeight = n.g + m.g;
 	            //System.out.println("Checking: (" + n.getX() + ", " + n.getY() + ")");
@@ -117,7 +118,7 @@ public class Explore {
 		return cost;
 	}
 	// Find nearest neighbour at each step
-	public Location nearestNeighbour() {
+	public Location nearestNeighbour(int exceed) {
 		//System.out.println(distances);
 		Location next_location = new Location();
 		Location returned_location = new Location();
@@ -128,11 +129,11 @@ public class Explore {
 				continue;
 			}
 
-			System.out.println("Checking Goal Location: (" + obstacleLocation.getX() + ", " + obstacleLocation.getY() + ")");
-			Location target = this.aStar(startingLocation,  obstacleLocation);
+			//System.out.println("Checking Goal Location: (" + obstacleLocation.getX() + ", " + obstacleLocation.getY() + ")");
+			Location target = this.aStar(startingLocation,  obstacleLocation, exceed);
 
 			double cost = this.getPathCost(target);
-			System.out.println("Cost: " + cost);
+			//System.out.println("Cost: " + cost);
 			if (cost < min_cost) {
 				min_cost = cost;
 				next_location = obstacleLocation;
@@ -141,12 +142,12 @@ public class Explore {
 		}
 		//this.printPath(returned_location);
 		//System.out.println(returned_location);
-		System.out.println(min_cost);
+		//System.out.println(min_cost);
 		this.startingLocation = next_location;
 		this.Visited.add(next_location);
 		this.openList.clear();
 		this.closedList.clear();
-		returned_location.print();
+		//returned_location.print();
 		return returned_location;
 	}
 
@@ -179,12 +180,13 @@ public class Explore {
 			int y = obstacleLocation.getY();
 
 			int furthestGrid = val; // Furthest grid cell the robot stops before image
+			int nearestGrid = 2; // Nearest grid cell the robot stops before image
 
 			if (direction == 'N') { //North
 				//robotGoalLocations.add(new Location(x+1,y-2, 'S')); // 10 cm away
 				//robotGoalLocations.add(new Location(x+1,y-5, 'S')); // 50 cm away
 				//robotGoalLocations.add(new Location(x+1,y-furthestGrid, 'S'));
-				for (int i=furthestGrid; i>=2; i--) { /// For distance
+				for (int i=furthestGrid; i>=nearestGrid; i--) { /// For distance
 					if (y-i <= 0) {
 						continue;
 					}
@@ -196,11 +198,21 @@ public class Explore {
 
 						for (int k=-1;k<=0;k++) { // For robot width
 							boolean currLocationUnavail = false;
-							for (int l = y_robot-5; l <= y-2; l++) { // for robot HEIGHT
-								Location check_location = new Location(x_robot+k,l);
-								if (!check_location.checkLocation(blockedLocations)) {
-									currLocationUnavail = true;
-									break;
+							if (y-y_robot < 5) {
+								for (int l = y_robot-5; l <= y-nearestGrid; l++) { // for robot HEIGHT
+									Location check_location = new Location(x_robot+k,l);
+									if (!check_location.checkLocation(blockedLocations)) {
+										currLocationUnavail = true;
+										break;
+									}
+								}
+							} else {
+								for (int l = y_robot-1; l <= y-nearestGrid; l++) { // for robot HEIGHT
+									Location check_location = new Location(x_robot+k,l);
+									if (!check_location.checkLocation(blockedLocations)) {
+										currLocationUnavail = true;
+										break;
+									}
 								}
 							}
 							if (currLocationUnavail) {
@@ -224,7 +236,7 @@ public class Explore {
 				//robotGoalLocations.add(new Location(x+2,y+1, 'W')); // 10 cm away
 				//robotGoalLocations.add(new Location(x+5,y+1, 'W')); // 50 cm away
 				//robotGoalLocations.add(new Location(x+furthestGrid,y+1, 'W')); // 50 cm away
-				for (int i=furthestGrid; i>=2; i--) {
+				for (int i=furthestGrid; i>=nearestGrid; i--) {
 					if (x+i >= 19) {
 						continue;
 					}
@@ -237,11 +249,21 @@ public class Explore {
 
 						for (int j=0;j<=1;j++) {
 							boolean currLocationUnavail = false;
-							for (int k = x_robot+5; k >= x+2; k--) {
-								Location check_location = new Location(k,y_robot+j);
-								if (!check_location.checkLocation(blockedLocations)) {
-									currLocationUnavail = true;
-									break;
+							if (x_robot-x<5) {
+								for (int k = x_robot+5; k >= x+nearestGrid; k--) {
+									Location check_location = new Location(k,y_robot+j);
+									if (!check_location.checkLocation(blockedLocations)) {
+										currLocationUnavail = true;
+										break;
+									}
+								}
+							} else {
+								for (int k = x_robot+1; k >= x+nearestGrid; k--) {
+									Location check_location = new Location(k,y_robot+j);
+									if (!check_location.checkLocation(blockedLocations)) {
+										currLocationUnavail = true;
+										break;
+									}
 								}
 							}
 							if (currLocationUnavail) {
@@ -264,7 +286,7 @@ public class Explore {
 			} else if (direction == 'S') { // South
 //				robotGoalLocations.add(new Location(x-1,y+furthestGrid, 'N')); // 10 cm away
 //				robotGoalLocations.add(new Location(x-1,y+5, 'N')); // 50 cm away
-				for (int i=furthestGrid; i>=2; i--) {
+				for (int i=furthestGrid; i>=nearestGrid; i--) {
 					if (y+i >= 19) {
 						continue;
 					}
@@ -276,11 +298,21 @@ public class Explore {
 
 						for (int j=0;j<=1;j++) {
 							boolean currLocationUnavail = false;
-							for (int k = y_robot+5; k >= y+2; k--) {
-								Location check_location = new Location(x_robot+j,k);
-								if (!check_location.checkLocation(blockedLocations)) {
-									currLocationUnavail = true;
-									break;
+							if (y_robot-y < 5) {
+								for (int k = y_robot+5; k >= y+nearestGrid; k--) {
+									Location check_location = new Location(x_robot+j,k);
+									if (!check_location.checkLocation(blockedLocations)) {
+										currLocationUnavail = true;
+										break;
+									}
+								}
+							} else {
+								for (int k = y_robot+1; k >= y+nearestGrid; k--) {
+									Location check_location = new Location(x_robot+j,k);
+									if (!check_location.checkLocation(blockedLocations)) {
+										currLocationUnavail = true;
+										break;
+									}
 								}
 							}
 							if (currLocationUnavail) {
@@ -303,7 +335,7 @@ public class Explore {
 			} else { // West
 				//robotGoalLocations.add(new Location(x-furthestGrid,y-1, 'E')); // 10 cm away
 				//robotGoalLocations.add(new Location(x-5,y-1, 'E')); // 50 cm away
-				for (int i=furthestGrid; i>=2; i--) {
+				for (int i=furthestGrid; i>=nearestGrid; i--) {
 					if (x-i <= 0) {
 						continue;
 					}
@@ -316,11 +348,21 @@ public class Explore {
 
 						for (int j=0;j<=1;j++) {
 							boolean currLocationUnavail = false;
-							for (int k = x_robot-5; k <= x-2; k++) {
-								Location check_location = new Location(k,y_robot+j);
-								if (!check_location.checkLocation(blockedLocations)) {
-									currLocationUnavail = true;
-									break;
+							if (x-x_robot < 5) {
+								for (int k = x_robot-5; k <= x-nearestGrid; k++) {
+									Location check_location = new Location(k,y_robot+j);
+									if (!check_location.checkLocation(blockedLocations)) {
+										currLocationUnavail = true;
+										break;
+									}
+								}
+							} else {
+								for (int k = x_robot-1; k <= x-nearestGrid; k++) {
+									Location check_location = new Location(k,y_robot+j);
+									if (!check_location.checkLocation(blockedLocations)) {
+										currLocationUnavail = true;
+										break;
+									}
 								}
 							}
 							if (currLocationUnavail) {
